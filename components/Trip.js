@@ -44,7 +44,7 @@ const styles = {
     borderRadius: 50
   },
   buttonContainer: {
-    width: 70   // Not playing a big role when background is same
+    //width: 70   // Not playing a big role when background is same
   },
   buttonIcon: {
     name: 'arrow-forward',
