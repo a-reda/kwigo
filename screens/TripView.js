@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, TextInput, ScrollView, Button} from 'react-native';
-import MapView from 'react-native-maps';
+import { StyleSheet, Text, TextInput, ScrollView ,View, Button} from 'react-native';
+import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
 import SearchComponent from '../components/SearchComponent';
 
@@ -10,32 +10,35 @@ class TripView extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
     return (
-      <ScrollView style={styles.container}>
-        <Text style={styles.logo}>Kwigo</Text>
+      <View style={styles.container}>
         <MapView
-          initialRegion={{
+          provider={PROVIDER_GOOGLE}
+          style={{...StyleSheet.absoluteFillObject}}
+          region={{
           latitude: 37.78825,
           longitude: -122.4324,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
         />
-        <SearchComponent />
-      </ScrollView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    ...StyleSheet.absoluteFillObject,
     flex: 1,
-    justifyContent: 'space-evenly',
+    height: 400,
+    width: 400,
+    justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: colors.white,
   },
   logo: {
     color: colors.purple,
-    fontSize: 70,
+    fontSize: 20,
     textAlign: 'center',
     margin: 10,
   }
