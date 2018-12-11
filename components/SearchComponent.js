@@ -7,16 +7,28 @@ class SearchComponent extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput {...formatProps} placeholder="Origin" style={styles.textinputo}></TextInput>
-        <TextInput {...formatProps} placeholder="Destination" style={styles.textinputd}></TextInput>
+        <TextInput placeholder="Origin" style={styles.textinputo} onSubmitEditing={() => this.refs.destination.focus()}></TextInput>
+        <TextInput placeholder="Destination" style={styles.textinputd} ref="destination" onSubmitEditing={search}></TextInput>
+        <View style={styles.buttonContainer}>
+          <Button
+                title="Go!"
+                onPress={search}
+                color={colors.blue}
+          />
+        </View>
       </View>
     );
   }
 }
 
+const search = () => {
+  console.log("Search running")
+}
+
 const styles = StyleSheet.create({
    container: {
-     width: "80%"
+     width: "80%",
+     justifyContent: "space-around"
    },
   textinputo: {
     fontSize: 25,
@@ -30,10 +42,10 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.orange,
     borderBottomWidth: 3,
     color: colors.blue
+  },
+  buttonContainer: {
+    paddingTop: 20
   }
 });
-
-const formatProps = {
-}
 
 export default SearchComponent;

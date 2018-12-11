@@ -1,21 +1,27 @@
 import {createBottomTabNavigator, createAppContainer} from 'react-navigation';
 import Icons from 'react-native-vector-icons/Ionicons';
+import React from "react"
+
+
+// Screens
 import LoginScreen from './screens/Login'
 import MainScreen from './screens/Main'
-import React from "react"
+import TripsScreen from './screens/Trips'
+
 
 import colors from "./styling/colors";
 
 const AppNavigator = createBottomTabNavigator({
   Login: {screen: LoginScreen},
   Main: {screen: MainScreen},
+  Trips: {screen: TripsScreen},
   },
   {
-  //initialRouteName: 'Main',
+  initialRouteName: 'Trips',
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        let iconName;
+        let iconName = `md-car`;
         if (routeName === 'Login') {
           iconName = `md-car`;
         } else if (routeName === 'Main') {

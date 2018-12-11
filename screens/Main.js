@@ -7,7 +7,6 @@ import colors from "../styling/colors";
 
 class MainScreen extends React.Component {
   render() {
-    console.log(this.props);
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
@@ -26,6 +25,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   logo: {
+    color: colors.purple,
     fontSize: 70,
     textAlign: 'center',
     margin: 10,
