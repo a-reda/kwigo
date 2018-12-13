@@ -3,10 +3,11 @@ import { StyleSheet, Text, TextInput, ScrollView ,View, Button} from 'react-nati
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
 import colors from "../styling/colors";
+import tools from "../utils/tools";
 
 class MapComponent extends React.Component {
   render() {
-    const initialPosition = this.props.initialPosition;
+    const initialPosition = this.props.userPosition ? tools.getCoordinates(this.props.userPosition): this.props.initialPosition;
     return (
     <View style={styles.container}>
         <MapView
@@ -15,15 +16,17 @@ class MapComponent extends React.Component {
           region={{
           latitude:  initialPosition.latitude,
           longitude: initialPosition.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421
+          latitudeDelta: 0.0300,
+          longitudeDelta: 0.0300
           }}
         >
-          <Marker
-            coordinate={initialPosition}
-            title="Reda"
-            description="GOGO"
-          />
+          { this.props.userPosition && // Marker for live location
+              <Marker
+                coordinate={tools.getCoordinates(this.props.userPosition)}
+                image={require('../assets/pinUser.png')}
+                title="User"
+              />
+          }
         </ MapView>
     </ View>
     );
