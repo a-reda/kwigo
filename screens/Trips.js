@@ -22,19 +22,16 @@ const mocktrips = getMockTrips();
 function getMockTrips() {
   let mocktrips = [];
   for (let i = 0; i<11; i++) {
-      mocktrips.push({origin: "Milano", destination:"Padova", depTime:"10:00"});
+      mocktrips.push({key: i, origin: "Milano", destination:"Padova", depTime:"10:00"});
   }
   return mocktrips
 }
 
 
-
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    //justifyContent: 'flex-start',
     backgroundColor: colors.white,
   },
   logo: {
