@@ -19,7 +19,7 @@ class TripView extends React.Component {
   }
 }
 
-const initialPosition = {lat: 45.4777408,lon: 9.2349859}
+const initialPosition = {latitude: 45.4777408,longitude: 9.2349859}
 
 const styles = StyleSheet.create({
   container: {

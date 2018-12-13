@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, TextInput, ScrollView ,View, Button} from 'react-native';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
 import colors from "../styling/colors";
 
@@ -13,12 +13,18 @@ class MapComponent extends React.Component {
           provider={PROVIDER_GOOGLE}
           style={{...StyleSheet.absoluteFillObject}}
           region={{
-          latitude:  initialPosition.lat,
-          longitude: initialPosition.lon,
+          latitude:  initialPosition.latitude,
+          longitude: initialPosition.longitude,
           latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        />
+          longitudeDelta: 0.0421
+          }}
+        >
+          <Marker
+            coordinate={initialPosition}
+            title="Reda"
+            description="GOGO"
+          />
+        </ MapView>
     </ View>
     );
   }
