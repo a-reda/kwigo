@@ -35,19 +35,11 @@ class MapComponent extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
+    // ...StyleSheet.absoluteFillObject,
     flex: 1,
-    height: 400,
+    height: 800,
     // width: 400,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    backgroundColor: colors.white,
-  },
-  logo: {
-    color: colors.purple,
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+    justifyContent: 'flex-start',
   }
 });
 

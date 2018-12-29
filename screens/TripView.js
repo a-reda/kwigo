@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { StyleSheet, Text, TextInput, ScrollView ,View, Button} from 'react-native';
 
 import MapComponent from '../components/MapComponent';
+import CheckinComponent from '../components/CheckinComponent';
 
 import requestLocationPermission from '../utils/permission';
 
@@ -11,7 +12,6 @@ class TripView extends React.Component {
 
   constructor(props) {
       super(props);
-
       this.state = {
           userPosition: null,
           error: null
@@ -49,6 +49,9 @@ class TripView extends React.Component {
           initialPosition={initialPosition}
           userPosition={this.state.userPosition}
         />
+        <CheckinComponent
+
+        />
       </View>
     );
   }
@@ -59,12 +62,7 @@ const initialPosition = {latitude: 45.4877408,longitude: 9.2349859}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  logo: {
-    color: colors.purple,
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+    justifyContent: 'center'
   }
 });
 
