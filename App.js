@@ -1,25 +1,28 @@
-import {createBottomTabNavigator, createAppContainer} from 'react-navigation';
+import {createBottomTabNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
 import Icons from 'react-native-vector-icons/Ionicons';
 import React from "react"
 
 
 // Screens
-import LoginScreen from './screens/Login'
 import MainScreen from './screens/Main'
 import TripsScreen from './screens/Trips'
 import TripView from './screens/TripView'
+import UserScreen from './screens/User'
+
+import LoginScreen from './screens/auth/Login'
+import AuthLoadingScreen from './screens/auth/AuthLoading'
 
 
 import colors from "./styling/colors";
 
 const AppNavigator = createBottomTabNavigator({
-  Login: {screen: LoginScreen},
   Main: {screen: MainScreen},
   Trips: {screen: TripsScreen},
   TripView: {screen: TripView}, // Temporary because this shouldn't be accessed from this navigator
+  User: {screen: UserScreen},
   },
   {
-  initialRouteName: 'TripView',
+  initialRouteName: 'Main',
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
@@ -38,4 +41,17 @@ const AppNavigator = createBottomTabNavigator({
     }
   });
 
-export default createAppContainer(AppNavigator);
+
+const AuthStack = createSwitchNavigator({
+    AuthLoading: {screen: AuthLoadingScreen},
+    Login: {screen: LoginScreen},
+    App: AppNavigator
+    },
+    {
+      initialRouteName: 'AuthLoading',
+      headerMode: 'none'
+    }
+
+);
+
+export default createAppContainer(AuthStack);
