@@ -4,18 +4,18 @@ import { StyleSheet, Text, TextInput, View, Button, AsyncStorage} from 'react-na
 import colors from "../styling/colors";
 
 class UserScreen extends React.Component {
-  render() {
-    const {navigate} = this.props.navigation;
 
-    const logOut = () => { 
-        AsyncStorage.removeItem('userToken');
-        this.navigate('AuthLoading');
-    }
+  logOut = () => { 
+      AsyncStorage.removeItem('userToken');
+      this.props.navigation.navigate('AuthLoading');
+  }
+
+  render() {
 
     return (
       <View style={styles.container}>
         <Text style={styles.title}>User management</Text>
-        <Button title="Log Out" color={colors.orange} onPress={this.logOut} />
+        <Button title="Log Out" color={colors.orange}  onPress={this.logOut} />
       </View>
     );
   }

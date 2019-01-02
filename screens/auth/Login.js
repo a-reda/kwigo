@@ -17,9 +17,30 @@ class LoginScreen extends React.Component {
     this.setState({ password: text })
   }
 
+  signUp = () => {
+    this.props.navigation.navigate('SignUp')
+  }
+
   performLogin = async () => {
     const res = await AuthenticationDS.login(this.state.email, this.state.password)
 
+    switch (res.code) {
+        case 'UNAUTHORIZED':
+          Alert.alert(res.text);
+          break;
+        case 'TOKEN':
+          AsyncStorage.setItem('userToken', res.text);
+          this.props.navigation.navigate('App');
+          break;
+        default:
+          Alert.alert("Unexpected response");
+          break;
+        }
+  }
+  ////// !!!!!!! ///////
+  /// This is just for testing
+  performTestLogin = async () => {
+    const res = await AuthenticationDS.login('reda@aissaoui.org', 'test')
     switch (res.code) {
         case 'UNAUTHORIZED':
           Alert.alert(res.text);
@@ -57,7 +78,11 @@ class LoginScreen extends React.Component {
               placeholder='Password'
               placeholderTextColor={colors.white}
               secureTextEntry/>
-      <Button title="Get started" color={colors.orange} onPress={this.performLogin}/>
+      <Button title="Get started" style={styles.bigButton} color={colors.orange} onPress={this.performLogin}/>
+      <View style={styles.underButton}>
+          <Button title="Sign up" style={styles.smallButton} color={colors.orange} onPress={this.signUp}/>
+          <Button title="Quick login" style={styles.smallButton} color={colors.orange} onPress={this.performTestLogin}/>
+      </View>
       </View>
       </View>
     );
@@ -80,6 +105,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: colors.purple,
     marginBottom: 50,
+  },
+  bigButton: { 
+    marginBottom: 10,
+    padding: 10
+  },
+  smallButton: { 
+    width: 40
+  },
+  underButton: { 
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10
   },
   input:{
     height: 40,

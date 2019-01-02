@@ -1,10 +1,6 @@
-import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
-import config from './config'
 
-const client = new ApolloClient({
-  uri: config.backend
-});
+import { client } from './config';
 
 const validateToken = (token) => {
   const VALIDATE_TOKEN = gql`

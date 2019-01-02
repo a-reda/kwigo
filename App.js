@@ -11,6 +11,7 @@ import UserScreen from './screens/User'
 
 import LoginScreen from './screens/auth/Login'
 import AuthLoadingScreen from './screens/auth/AuthLoading'
+import SignUpScreen from './screens/auth/SignUp'
 
 
 import colors from "./styling/colors";
@@ -45,6 +46,7 @@ const AppNavigator = createBottomTabNavigator({
 const AuthStack = createSwitchNavigator({
     AuthLoading: {screen: AuthLoadingScreen},
     Login: {screen: LoginScreen},
+    SignUp: {screen: SignUpScreen},
     App: AppNavigator
     },
     {
