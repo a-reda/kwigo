@@ -40,7 +40,7 @@ class LoginScreen extends React.Component {
   ////// !!!!!!! ///////
   /// This is just for testing
   performTestLogin = async () => {
-    const res = await AuthenticationDS.login('reda@aissaoui.org', 'test')
+    const res = await AuthenticationDS.login('reda@aissaoui.org', 'Helloworld')
     switch (res.code) {
         case 'UNAUTHORIZED':
           Alert.alert(res.text);

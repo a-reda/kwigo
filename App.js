@@ -4,10 +4,12 @@ import React from "react"
 
 
 // Screens
-import MainScreen from './screens/Main'
+import Mains from './screens/newtrip/trips'
 import TripsScreen from './screens/Trips'
 import TripView from './screens/TripView'
 import UserScreen from './screens/User'
+
+import NewTripNavigator from './screens/newtrip/newTrip'
 
 import LoginScreen from './screens/auth/Login'
 import AuthLoadingScreen from './screens/auth/AuthLoading'
@@ -17,13 +19,14 @@ import SignUpScreen from './screens/auth/SignUp'
 import colors from "./styling/colors";
 
 const AppNavigator = createBottomTabNavigator({
-  Main: {screen: MainScreen},
+  Mains: {screen: Mains},
   Trips: {screen: TripsScreen},
   TripView: {screen: TripView}, // Temporary because this shouldn't be accessed from this navigator
   User: {screen: UserScreen},
+  NewTrip:  NewTripNavigator
   },
   {
-  initialRouteName: 'Main',
+  initialRouteName: 'Mains',
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
@@ -41,7 +44,6 @@ const AppNavigator = createBottomTabNavigator({
       inactiveTintColor: colors.grey,
     }
   });
-
 
 const AuthStack = createSwitchNavigator({
     AuthLoading: {screen: AuthLoadingScreen},

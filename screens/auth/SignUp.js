@@ -20,7 +20,7 @@ export default class SignUpScreen extends React.Component {
     this.setState({ [key]: val })
   }
   signUp = async () => {
-
+    console.log(this.state)
     UserDS.createUser(this.state).then((res)=> {
       switch (res.code) {
           case 'NOK':
@@ -36,7 +36,6 @@ export default class SignUpScreen extends React.Component {
               break;
             }
     })
-
   }
 
   render() {
