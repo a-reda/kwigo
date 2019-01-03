@@ -6,10 +6,7 @@ import NewTripTimeScreen from './newTripTime';
 import NewTripInfoScreen from './newTripInfo';
 
 const NewTripNavigator = createStackNavigator({
-  NewTripDeparture: {screen: NewTripDepartureScreen ,
-  navigationOptions:{
-    tabBarVisible: false
-  }},
+  NewTripDeparture: {screen: NewTripDepartureScreen},
   NewTripArrival: {screen: NewTripArrivalScreen},
   NewTripTime: {screen: NewTripTimeScreen},
   NewTripInfo: {screen: NewTripInfoScreen}

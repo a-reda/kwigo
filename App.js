@@ -4,7 +4,7 @@ import React from "react"
 
 
 // Screens
-import Mains from './screens/newtrip/trips'
+import Main from './screens/newtrip/trips'
 import TripsScreen from './screens/Trips'
 import TripView from './screens/TripView'
 import UserScreen from './screens/User'
@@ -19,14 +19,13 @@ import SignUpScreen from './screens/auth/SignUp'
 import colors from "./styling/colors";
 
 const AppNavigator = createBottomTabNavigator({
-  Mains: {screen: Mains},
+  Main: {screen: Main},
   Trips: {screen: TripsScreen},
   TripView: {screen: TripView}, // Temporary because this shouldn't be accessed from this navigator
-  User: {screen: UserScreen},
-  NewTrip:  NewTripNavigator
+  User: {screen: UserScreen}
   },
   {
-  initialRouteName: 'Mains',
+  initialRouteName: 'Main',
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
