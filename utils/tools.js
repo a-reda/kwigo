@@ -1,6 +1,5 @@
 
 
-
 function getCoordinates(location) {
     return {
           latitude: location.coords.latitude,
@@ -8,7 +7,22 @@ function getCoordinates(location) {
         }
 }
 
+function getDepArrCoordinates(dep, arr) { 
+  if(dep && arr) {
+  return {
+    departure: {
+      latitude: dep.latitude,
+      longitude: dep.longitude
+    },
+    arrival: {
+      latitude: arr.latitude,
+      longitude: arr.longitude
+    }
+  }}
+  else return null;
+}
 
 export default {
-  getCoordinates: getCoordinates
+  getCoordinates: getCoordinates,
+  getDepArrCoordinates: getDepArrCoordinates
 }

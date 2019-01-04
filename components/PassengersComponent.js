@@ -13,8 +13,7 @@ class PassengersComponent extends React.Component {
 
   countChange(op) {
     // Check if operation is within limits
-    const flag = ( (op == '-') && (this.state.count == 1) ) ||  ( (op == '+') && (this.state.count == 5) );
-    console.log(flag)
+    const flag = ((op == '-') && (this.state.count == 1)) ||  ((op == '+') && (this.state.count == 5));
     if(!flag) {
       this.setState((state, props) => {
           const count = (op == '+') ? state.count + 1 : state.count - 1
@@ -29,8 +28,10 @@ class PassengersComponent extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Passengers</Text>
-        <View style={styles.counterRow}>
+          <View style={styles.passengersTitle}>
+            <Text style={styles.title}>Passengers</Text>
+          </View>
+      <View style={styles.counterRow}>
         <Icon name="ios-remove-circle"
               type="ionicon"
               size={50}
@@ -43,24 +44,35 @@ class PassengersComponent extends React.Component {
               onPress={() => this.countChange('+')}
               color={colors.orange}/>
         </View>
-      </View>
+        </View>
     );
   }
 }
 
-
 const styles = StyleSheet.create({
    container: {
-     flex: 1,
-     padding: 10
+     padding: 10,
+     alignItems: 'center',
+     flexDirection: 'row'
    },
    counterRow: {
      flexDirection: 'row',
-     alignItems: 'center'
+     alignItems: 'center',
+     justifyContent: 'space-evenly',
+     width: '50%'
    },
    numberText: {
      fontSize: 40,
      fontWeight: '500'
+   },
+   title: {
+     fontSize: 25,
+     fontWeight: '500',
+     color: colors.purple,
+   },
+   passengersTitle: {
+     width:'50%',
+     justifyContent: 'flex-start'
    }
 });
 

@@ -6,15 +6,19 @@ import RNGooglePlaces from 'react-native-google-places';
 import { Icon } from 'react-native-elements';
 
 import PassengersComponent from './PassengersComponent';
+import PriceComponent from './PriceComponent';
+import MapComponent from './MapComponent';
 
 import colors from "../styling/colors";
+import tools from "../utils/tools";
 
 class NewTripModal extends React.Component {
 
   state = {
       departure: null,
       arrival: null,
-      passengersCount: null
+      passengersCount: null,
+      price: null,
   }
 
   openPickModal(type) {
@@ -31,10 +35,12 @@ class NewTripModal extends React.Component {
     this.setState({passengersCount: num});
   }
 
+  priceChange(num) {
+    this.setState({price: num});
+  }
+
   getCityText(type) {
-
-    return this.state[type] ? this.state[type].name : 'Pick ...'
-
+    return this.state[type] ? this.state[type].name : ''
   }
 
 
@@ -54,17 +60,35 @@ class NewTripModal extends React.Component {
             onPress={this.props.toggleShow}
             color={colors.orange}/>
         </View>
+        <MapComponent points={tools.getDepArrCoordinates(this.state.departure, this.state.arrival)}/>
           <View style={styles.placePicker}>
-            <Text style ={styles.bigText}>Departure {this.state.passengersCount}</Text>
-            <TouchableOpacity onPress={() => this.openPickModal('departure')}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Text style ={styles.bigText}>Departure</Text>
+                <View style={{justifyContent: 'flex-end', width: '50%'}}>
+                <Icon
+                  name="map-marker"
+                  type="font-awesome"
+                  size={50}
+                  onPress={() => this.openPickModal('departure')}
+                  color={colors.orange}/>
+            </View>
+            </View>
             <Text style={styles.pickText}>{this.getCityText('departure')}</Text>
-            </TouchableOpacity>
-            <Text style ={styles.bigText}>Arrival</Text>
-            <TouchableOpacity onPress={() => this.openPickModal('arrival')}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                  <Text style ={styles.bigText}>Arrival</Text>
+                  <View style={{justifyContent: 'flex-end', width: '50%'}}>
+                  <Icon
+                    name="map-marker"
+                    type="font-awesome"
+                    size={50}
+                    onPress={() => this.openPickModal('arrival')}
+                    color={colors.orange}/>
+              </View>
+              </View>
             <Text style={styles.pickText}>{this.getCityText('arrival')}</Text>
-            </TouchableOpacity>
           </View>
           <PassengersComponent passengerCountChange={this.passengerCountChange.bind(this)}/>
+          <PriceComponent priceChange={this.priceChange.bind(this)}/>
       </Modal>
     );
   }
@@ -81,8 +105,9 @@ const styles = StyleSheet.create({
    },
    bigText: {
      fontSize: 30,
-     fontWeight: '400',
-     color: colors.purple
+     fontWeight: '500',
+     color: colors.purple,
+     width: '50%'
    },
    placePicker: {
      justifyContent: 'flex-start',
