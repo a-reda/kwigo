@@ -16,13 +16,13 @@ class PriceComponent extends React.Component {
           <View style={styles.textInput}>
           <TextInput
             style={styles.numberText}
-            placeholder='0'
+            defaultValue='0'
             keyboardType='number-pad'
             returnKeyType="next"
             placeholderTextColor='black'
             onChangeText={val => this.props.priceChange(val)}
           />
-          <Text style ={styles.numberText}>€</Text>
+          <Text style ={styles.numberText}>€/P</Text>
       </View>
       </View>
     );
@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
    },
    numberText: {
      fontSize: 40,
-     fontWeight: '500'
+     fontWeight: '500',
+     color: colors.grey
    },
    title: {
      fontSize: 25,

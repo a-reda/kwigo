@@ -20,19 +20,15 @@ class MainScreen extends React.Component {
   };
 
 
-  _onCloseModal = (state) => {
-
-    this.s
-  }
-
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.logo}>Kwigo</Text>
+        { this.state.newTripModalVisible ?
         <NewTripModal
             visible={this.state.newTripModalVisible}
             toggleShow={this.toggleShow}
-        />
+        /> : null }
         <SearchComponent />
         <View style={styles.buttonContainer}>
           <Button

@@ -1,23 +1,26 @@
-// // var NodeGeocoder = require('node-geocoder')
-// //
-// // var options = {
-// //   provider: 'google',
-// //   apiKey: '***REMOVED***'
-// // };
-// //
-// // var geocoder = NodeGeocoder(options);
-// //
-// // function getCityName(lat, lon) {
-// //
-// //   return geocoder.reverse({lat: lat, lon: lon}).then(function(res) {
-// //     console.log(res);
-// //     return  res[0].city;
-// //   })
-// //   .catch(function(err) {
-// //     console.log(err);
-// //   });
-//
-// }
+function prepareTrip(s) {
+  return {
+      departure: {
+        city: s.departure.city,
+        latitude: s.departure.latitude,
+        longitude: s.departure.longitude,
+        address: s.departure.address,
+        name: s.departure.name,
+      },
+      arrival: {
+        city: s.arrival.city,
+        latitude: s.arrival.latitude,
+        longitude: s.arrival.longitude,
+        address: s.arrival.address,
+        name: s.arrival.name,
+      },
+      passengersCount: s.passengersCount,
+      price: parseInt(s.price),
+      date: s.date
+  }
+
+
+}
 
 function getCoordinates(location) {
     return {
@@ -43,5 +46,6 @@ function getDepArrCoordinates(dep, arr) { 
 
 export default {
   getCoordinates: getCoordinates,
-  getDepArrCoordinates: getDepArrCoordinates
+  getDepArrCoordinates: getDepArrCoordinates,
+  prepareTrip: prepareTrip
 }
