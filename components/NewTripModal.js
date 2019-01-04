@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, Alert, Modal, View, Button, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, Alert, Modal, View,  ScrollView, Button, TouchableOpacity} from 'react-native';
 
 import RNGooglePlaces from 'react-native-google-places';
 
@@ -19,6 +19,17 @@ class NewTripModal extends React.Component {
       arrival: null,
       passengersCount: null,
       price: null,
+  }
+
+  onRequestClose() {
+        Alert.alert(
+            'Exit trip creation?',
+            'The trip will be lost',
+          [
+            {text: 'Cancel', style: 'cancel'},
+            {text: 'OK', onPress: () => this.props.toggleShow()},
+          ],
+            { cancelable: false });
   }
 
   openPickModal(type) {
@@ -50,14 +61,15 @@ class NewTripModal extends React.Component {
         visible={this.props.visible}
         animationType="slide"
         style={styles.container}
-        onRequestClose={this.props.toggleShow}
+        onRequestClose={this.onRequestClose.bind(this)}
         >
+        <ScrollView>
         <View style={styles.backIcon}>
           <Icon
             name="md-arrow-round-back"
             type="ionicon"
             size={55}
-            onPress={this.props.toggleShow}
+            onPress={this.onRequestClose.bind(this)}
             color={colors.orange}/>
         </View>
         <MapComponent points={tools.getDepArrCoordinates(this.state.departure, this.state.arrival)}/>
@@ -89,6 +101,7 @@ class NewTripModal extends React.Component {
           </View>
           <PassengersComponent passengerCountChange={this.passengerCountChange.bind(this)}/>
           <PriceComponent priceChange={this.priceChange.bind(this)}/>
+          </ScrollView>
       </Modal>
     );
   }

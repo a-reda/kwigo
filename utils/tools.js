@@ -1,4 +1,23 @@
-
+// // var NodeGeocoder = require('node-geocoder')
+// //
+// // var options = {
+// //   provider: 'google',
+// //   apiKey: '***REMOVED***'
+// // };
+// //
+// // var geocoder = NodeGeocoder(options);
+// //
+// // function getCityName(lat, lon) {
+// //
+// //   return geocoder.reverse({lat: lat, lon: lon}).then(function(res) {
+// //     console.log(res);
+// //     return  res[0].city;
+// //   })
+// //   .catch(function(err) {
+// //     console.log(err);
+// //   });
+//
+// }
 
 function getCoordinates(location) {
     return {

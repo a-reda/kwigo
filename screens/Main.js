@@ -12,7 +12,7 @@ class MainScreen extends React.Component {
 
 
   state = {
-    newTripModalVisible: true
+    newTripModalVisible: false
   };
 
   toggleShow = () => {
