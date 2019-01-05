@@ -3,13 +3,17 @@ import { Text, View } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 
 import colors from "../styling/colors";
+import tools from "../utils/tools";
 
-const Trip = ({trip}) => (
-  <Card containerStyle={styles.card}>
-      <Text style={styles.cities}>{trip.origin} - {trip.destination}</Text>
-      <Text style={styles.time}>{trip.depTime}</Text>
+const Trip = ({trip}) =>
+(
+  <Card containerStyle={styles.card} key={trip.id}>
+      <Text style={styles.cities}>
+        {`${trip.departure ? trip.departure.city : ''} - ${trip.arrival ? trip.arrival.city : ''}`}
+      </Text>
+      <Text style={styles.time}>{`${tools.getFormatedDate(new Date(trip.date))}`}</Text>
       <View style={styles.lowerContainer}>
-        <Text style={styles.user}>UserName</Text>
+        <Text style={styles.user}>{`${trip.driver ? trip.driver.name : ''}`}</Text>
         <Button
                 icon={styles.buttonIcon}
                 titleStyle={styles.buttonTitle}

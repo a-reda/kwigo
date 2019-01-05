@@ -16,7 +16,7 @@ function prepareTrip(s) {
       },
       passengersCount: s.passengersCount,
       price: parseInt(s.price),
-      date: s.date
+      date: (new Date(s.date)).getTime()
   }
 
 
@@ -44,8 +44,25 @@ function getDepArrCoordinates(dep, arr) { 
   else return null;
 }
 
+function getDepartureDate(d) {
+  return `${addZero(d.getDate())}/${addZero(d.getMonth()+1)}/${d.getFullYear()}`
+}
+
+function getDepartureTime(d) {
+  return `${addZero(d.getHours())}:${addZero(d.getMinutes())}`
+}
+
+function addZero(n) {
+  return ((n<10) ? "0" : "") + n.toString();
+}
+
+function getFormatedDate(d) {
+  return `${getDepartureTime(d)} - ${getDepartureDate(d)}`
+}
+
 export default {
   getCoordinates: getCoordinates,
   getDepArrCoordinates: getDepArrCoordinates,
-  prepareTrip: prepareTrip
+  prepareTrip: prepareTrip,
+  getFormatedDate: getFormatedDate
 }

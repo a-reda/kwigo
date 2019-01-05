@@ -3,6 +3,8 @@ import { StyleSheet, Text, Alert, Modal, View,
           ScrollView, Button, TouchableOpacity,
           DatePickerAndroid, TimePickerAndroid } from 'react-native';
 
+import TripDS  from '../datastore/trip-ds';
+
 import RNGooglePlaces from 'react-native-google-places';
 import update from 'immutability-helper';
 
@@ -35,22 +37,26 @@ class NewTripModal extends React.Component {
   submitTrip() {
     this.setState({isSubmitting: true})
     const s = this.state;
-    const flag = s.departure && s.arrival && s.passengersCount && s.price
-    console.log(flag);
+    const flag = s.departure && s.arrival && s.passengersCount
     console.log(s);
     if (!flag) {
         Alert.alert('Missing information:',
                     `${!s.departure ? 'Departure location' : ''}\
                      ${!s.arrival ? '\nArrival location' : ''}\
-                     ${!s.passengersCount ? '\nNumber of passengers' : ''}\
-                     ${!s.price ? '\nPrice missing' : ''}`
+                     ${!s.passengersCount ? '\nNumber of passengers' : ''}`
         )
     } else {
        const trip = tools.prepareTrip(s)
        console.log(trip)
+       TripDS.createTrip(trip).then((res) => {
+              Alert.alert("Trip created successfully!")
+              this.props.toggleShow();
+        }).catch((err) => {
+          Alert.alert("Trip creation error", err.toString())})
+
     }
     this.setState({isSubmitting: false})
-    this.props.toggleShow();
+
   }
 
   onRequestClose() {
