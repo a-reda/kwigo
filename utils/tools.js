@@ -64,5 +64,7 @@ export default {
   getCoordinates: getCoordinates,
   getDepArrCoordinates: getDepArrCoordinates,
   prepareTrip: prepareTrip,
-  getFormatedDate: getFormatedDate
+  getFormatedDate: getFormatedDate,
+  getDepartureDate: getDepartureDate,
+  getDepartureTime: getDepartureTime,
 }

@@ -5,19 +5,20 @@ import { Card, Button } from 'react-native-elements';
 import colors from "../styling/colors";
 import tools from "../utils/tools";
 
-const Trip = ({trip}) =>
+const Trip = ({trip, removeDate, onPress}) =>
 (
   <Card containerStyle={styles.card} key={trip.id}>
       <Text style={styles.cities}>
         {`${trip.departure ? trip.departure.city : ''} - ${trip.arrival ? trip.arrival.city : ''}`}
       </Text>
-      <Text style={styles.time}>{`${tools.getFormatedDate(new Date(trip.date))}`}</Text>
+      <Text style={styles.time}>{removeDate ? `${tools.getDepartureTime(new Date(trip.date))}` : `${tools.getFormatedDate(new Date(trip.date))}`}</Text>
       <View style={styles.lowerContainer}>
         <Text style={styles.user}>{`${trip.driver ? trip.driver.name : ''}`}</Text>
         <Button
                 icon={styles.buttonIcon}
                 titleStyle={styles.buttonTitle}
                 containerViewStyle={styles.buttonContainer}
+                onPress={() => onPress(trip.id)}
                 buttonStyle={styles.forwardButton}/>
       </View>
   </Card>

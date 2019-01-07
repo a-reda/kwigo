@@ -59,7 +59,7 @@ class TripsScreen extends React.Component {
           />
         }>
           <TripList title="Joined trips" trips={[]}/>
-          <TripList title="Offered trips" trips={mocktrips}/>
+          <TripList title="Offered trips" trips={this.state.offeredTrips}/>
       </ ScrollView>
     );
 
@@ -77,7 +77,7 @@ class TripsScreen extends React.Component {
         }
       }}
       onIndexChange={index => this.setState({ index })}
-      initialLayout={{ width: Dimensions.get('window').width }}
+      initialLayout={{ width: Dimensions.get('window').width,  height: Dimensions.get('window').height}}
       renderTabBar={props =>
             <TabBar
               {...props}
@@ -89,18 +89,6 @@ class TripsScreen extends React.Component {
     );
   }
 }
-
-
-// Dev purposes
-const mocktrips = getMockTrips();
-function getMockTrips() {
-  let mocktrips = [];
-  for (let i = 0; i<2; i++) {
-      mocktrips.push({key: i, origin: "Milano", destination:"Padova", depTime:"10:00"});
-  }
-  return mocktrips
-}
-
 
 const styles = StyleSheet.create({
   container: {

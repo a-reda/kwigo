@@ -34,7 +34,42 @@ const getMyTrips = async (trip) => {
     })
 }
 
+const searchTrips = (departure, arrival, date) => {
+    const SEARCH_TRIPS = gql`
+    {
+      searchTrips(departure: \"${departure}\", arrival: \"${arrival}\",
+      					   date:${date.getTime()})
+      { id departure{city name} arrival{city name} driver{name} date price }
+
+    }
+  `
+    return client.query({ query: SEARCH_TRIPS, fetchPolicy: 'no-cache'}).then(res => {
+      return res.data.searchTrips;
+    })
+}
+
+const findTripById = (id) => {
+    const FIND_TRIP = gql`
+    {
+      findTripById(id: \"${id}\")
+      { id departure{city latitude longitude name}
+        arrival{city latitude longitude name}
+        driver{name car} date price
+        passengerCount
+      }
+
+    }
+  `
+    console.log(FIND_TRIP)
+    return client.query({ query: FIND_TRIP, fetchPolicy: 'no-cache'}).then(res => {
+      console.log(res);
+      return res.data.findTripById;
+    }).catch((err) => console.log(err))
+}
+
 export default {
   createTrip: createTrip,
   getMyTrips: getMyTrips,
+  searchTrips: searchTrips,
+  findTripById: findTripById
 }

@@ -13,7 +13,10 @@ const validateToken = (token) => {
       }
     }
   `
-  return client.query({query: VALIDATE_TOKEN}).then(res => res.data.userByToken)
+  return client.query({query: VALIDATE_TOKEN})
+          .then(res => res.data.userByToken).catch((err) => {
+            console.log(err)
+          })
 }
 
 const login = (email, password) => {

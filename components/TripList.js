@@ -6,11 +6,11 @@ import Trip from './Trip';
 
 import colors from "../styling/colors";
 
-const TripList = ({trips, title}) => (
+const TripList = ({trips, title, hideTitle, onTripSelected}) => (
 <View>
-  <Text style={styles.title}>{title}</Text>
+  { hideTitle ? null : <Text style={styles.title}>{title}</Text> }
   { trips.length ? null : <Text style={styles.greyTitle}>No {title.toLowerCase()} available</Text>}
-  {trips.map((t) => (<Trip trip={t} />))}
+  { trips.map((t) => (<Trip key={t.id} trip={t} onPress={onTripSelected} removeDate={hideTitle} />))}
 </View>
 )
 

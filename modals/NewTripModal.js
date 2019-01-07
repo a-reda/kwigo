@@ -10,9 +10,9 @@ import update from 'immutability-helper';
 
 import { Icon, Button as ButtonE } from 'react-native-elements';
 
-import PassengersComponent from './PassengersComponent';
-import PriceComponent from './PriceComponent';
-import MapComponent from './MapComponent';
+import PassengersComponent from '../components/PassengersComponent';
+import PriceComponent from '../components/PriceComponent';
+import MapComponent from '../components/MapComponent';
 
 import ServerDS  from '../datastore/server';
 
@@ -23,7 +23,8 @@ class NewTripModal extends React.Component {
 
   constructor(props) {
   super(props);
-  var date = new Date(); date.setHours(0); date.setMinutes(0);
+  var date = new Date(); date.setHours(8
+  ); date.setMinutes(0);
   this.state = {
         departure: null,
         arrival: null,
