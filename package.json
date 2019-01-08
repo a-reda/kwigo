@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
-    "flow": "flow"
+    "test": "jest"
   },
   "dependencies": {
     "apollo-boost": "^0.1.23",
@@ -25,10 +24,7 @@
     "string": "^3.3.3"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
     "babel-jest": "23.6.0",
-    "babel-preset-flow": "^6.23.0",
-    "flow-bin": "^0.89.0",
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.50.0",
     "react-test-renderer": "16.6.1"
