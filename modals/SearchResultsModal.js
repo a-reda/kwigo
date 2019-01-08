@@ -93,7 +93,6 @@ class SearchResultsModal extends React.Component {
 
   onTripSelected = (id) => {
     this.setState({selectedTrip: id})
-    console.log(id)
   }
 
   onCloseTripView = (isCheckedIn) => {
@@ -110,6 +109,7 @@ class SearchResultsModal extends React.Component {
 
         { this.state.selectedTrip ?
         <TripViewModal
+              mode='JOIN'
               visible={true}
               tripId={this.state.selectedTrip}
               onRequestClose={this.onCloseTripView}
@@ -172,11 +172,13 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     backgroundColor: colors.orange,
-    padding: 10
+    padding: 10,
   },
   dateSelector: {
     padding: 10,
     flexDirection: 'row',
+    borderBottomColor: colors.lightgrey,
+    borderBottomWidth: 1,
     justifyContent: 'space-between'
   },
   date: {

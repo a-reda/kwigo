@@ -14,8 +14,8 @@ class MainScreen extends React.Component {
 
   state = {
     newTripModalVisible: false,
-    searchTripModalVisible: true,
-    searchTrip: {departure: 'Milano', arrival: 'Milano', date: new Date()}
+    searchTripModalVisible: false,
+    searchTrip: {}
   };
 
   toggleShow = () => {
@@ -24,14 +24,12 @@ class MainScreen extends React.Component {
   };
 
   toggleShowSearch = (trip) => {
-      console.log(trip)
       // Here it should get if a new trip was created
       this.setState(state => ({
         searchTripModalVisible: !state.searchTripModalVisible,
         searchTrip: trip
       }));
   };
-
 
   render() {
     return (

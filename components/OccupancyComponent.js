@@ -10,7 +10,6 @@ class OccupancyComponent extends React.Component {
   getAvailable(n, isBusy) {
     available = [];
     for (let i=0; i< n; i++) {
-      console.log('pushing')
         available.push(<Icon
                   key={i}
                   size={40}

@@ -28,7 +28,7 @@ class NewTripModal extends React.Component {
   this.state = {
         departure: null,
         arrival: null,
-        passengersCount: null,
+        passengersCount: 1,
         price: 0,
         date: date,
         isSubmitting: false

@@ -34,6 +34,19 @@ const getMyTrips = async (trip) => {
     })
 }
 
+const registeredTrips = async (trip) => {
+    const REGISTRED_TRIPS = gql`
+    {
+      registeredTrips{
+        id
+        departure{city} arrival{city} driver{name} date price}
+    }
+  `
+    return client.query({ query: REGISTRED_TRIPS, fetchPolicy: 'no-cache'}).then(res => {
+      return res.data.registeredTrips;
+    })
+}
+
 const searchTrips = (departure, arrival, date) => {
     const SEARCH_TRIPS = gql`
     {
@@ -55,7 +68,8 @@ const findTripById = (id) => {
       { id departure{city latitude longitude name}
         arrival{city latitude longitude name}
         driver{name car} date price
-        passengerCount
+        passengersCount
+        passengers {name}
       }
 
     }
@@ -71,5 +85,6 @@ export default {
   createTrip: createTrip,
   getMyTrips: getMyTrips,
   searchTrips: searchTrips,
-  findTripById: findTripById
+  findTripById: findTripById,
+  registeredTrips: registeredTrips
 }

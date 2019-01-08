@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, TextInput, ScrollView, Button, Dimensions, RefreshControl} from 'react-native';
+import { View, StyleSheet, Text, TextInput, ScrollView, Button, Dimensions, RefreshControl} from 'react-native';
 
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+
+import TripViewModal from '../modals/TripViewModal';
+
 
 import SearchComponent from '../components/SearchComponent';
 import TripList from '../components/TripList';
@@ -20,22 +23,38 @@ class TripsScreen extends React.Component {
       {key: 'past', title: 'Past trips'}
     ],
     offeredTrips: [],
-    pastTrips: []
+    registeredTrips: [],
+    selectedTrip: '',
+    selectedTripP: ''
   }
 
   componentDidMount() {
     this.setState({refreshing: true});
-    TripDS.getMyTrips().then((trips) => {
-      console.log(trips)
+    promises = [];
+    promises.push(TripDS.getMyTrips().then((trips) => {
       this.setState({offeredTrips: trips})
-      this.setState({refreshing: false});
-    })
+    }))
+    promises.push(TripDS.registeredTrips().then((trips) => {
+      console.log(trips)
+      this.setState({registeredTrips: trips})
+    }))
+    Promise.all(promises).then(this.setState({refreshing: false}))
+
+  }
+
+  onTripSelected = (id) => {
+    console.log(id)
+    this.setState({selectedTrip: id})
+  }
+
+  onRequestClose = (id) => {
+    this.setState({selectedTrip: ''})
   }
 
   render() {
     const {navigate} = this.props.navigation;
 
-    const CurrentTrips = (
+    var CurrentTrips = (
       <ScrollView
         style={styles.container}
         refreshControl={
@@ -44,12 +63,18 @@ class TripsScreen extends React.Component {
             onRefresh={this.componentDidMount.bind(this)}
           />
         }>
-          <TripList title="Joined trips" trips={[]}/>
-          <TripList title="Offered trips" trips={this.state.offeredTrips}/>
+          { this.state.selectedTrip ?
+          <TripViewModal
+                visible={true}
+                tripId={this.state.selectedTrip}
+                onRequestClose={this.onRequestClose}
+          />  : null}
+          <TripList onTripSelected={this.onTripSelected} title="Joined trips" trips={this.state.registeredTrips}/>
+          <TripList onTripSelected={this.onTripSelected} title="Offered trips" trips={this.state.offeredTrips}/>
       </ ScrollView>
     );
 
-    const PastTrips = (
+    var registeredTrips = (
       <ScrollView
         style={styles.container}
         refreshControl={
@@ -58,8 +83,8 @@ class TripsScreen extends React.Component {
             onRefresh={this.componentDidMount}
           />
         }>
-          <TripList title="Joined trips" trips={[]}/>
-          <TripList title="Offered trips" trips={this.state.offeredTrips}/>
+          <TripList onTripSelected={this.onTripSelected} title="Joined trips" trips={this.state.registeredTrips}/>
+          <TripList onTripSelected={this.onTripSelected} title="Offered trips" trips={this.state.offeredTrips}/>
       </ ScrollView>
     );
 
@@ -71,7 +96,7 @@ class TripsScreen extends React.Component {
           case 'current':
             return CurrentTrips;
           case 'past':
-            return PastTrips;
+            return registeredTrips;
           default:
             null
         }

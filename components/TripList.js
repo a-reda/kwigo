@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { ScrollView, Text, StyleSheet } from 'react-native';
 import { List } from 'react-native-elements';
 
 import Trip from './Trip';
@@ -7,11 +7,11 @@ import Trip from './Trip';
 import colors from "../styling/colors";
 
 const TripList = ({trips, title, hideTitle, onTripSelected}) => (
-<View>
+<ScrollView>
   { hideTitle ? null : <Text style={styles.title}>{title}</Text> }
   { trips.length ? null : <Text style={styles.greyTitle}>No {title.toLowerCase()} available</Text>}
   { trips.map((t) => (<Trip key={t.id} trip={t} onPress={onTripSelected} removeDate={hideTitle} />))}
-</View>
+</ScrollView>
 )
 
 const styles = StyleSheet.create({
