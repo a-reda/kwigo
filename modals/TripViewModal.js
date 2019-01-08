@@ -40,14 +40,14 @@ class TripView extends React.Component {
               style={styles.container}
               onRequestClose={this.props.onRequestClose}>
           <View>
-           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+           <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 10}}>
               <Icon
                 name="md-arrow-round-back"
                 type="ionicon"
                 size={55}
                 onPress={() => this.props.onRequestClose(false)}
                 color={colors.orange}/>
-                <Text style={styles.price}>{trip.price} €</Text>
+                <Text style={styles.price}>{trip.price} {trip.price ? € : null}</Text>
             </View>
               { trip.date ?
               <View>
