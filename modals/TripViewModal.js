@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, TextInput, ScrollView ,View, Button, Modal, ActivityIndicator} from 'react-native';
+import { Alert, StyleSheet, Text, TextInput, AsyncStorage,
+         ScrollView ,View, Button, Modal, ActivityIndicator} from 'react-native';
 
 import { Icon, Button as ButtonE } from 'react-native-elements'
 
@@ -25,7 +26,55 @@ class TripView extends React.Component {
   }
 
   componentDidMount () {
-      TripDS.findTripById(this.props.tripId).then((t) => this.setState({trip: t}))
+      AsyncStorage.getItem('userId').then((id) => this.setState({userId: id}));
+      TripDS.findTripById(this.props.tripId).then((t) => {
+        this.setState({trip: t});
+      }).catch((err) => Alert.alert('Couldn\'t get trip', err.toString(), [{text: 'Ok', onPress: () => this.props.onRequestClose()}]))
+  }
+
+  registerTrip = () => {
+      TripDS.registerTrip(this.props.tripId).then((res) => {
+        if(res.code == "OK") {
+          this.componentDidMount()
+          console.log("registered")
+        } else {
+          Alert.alert('Couldn\'t register you for the trip', res.text);
+        }
+      })
+  }
+
+  leaveTrip = () => {
+      TripDS.leaveTrip(this.props.tripId).then((res) => {
+        if(res.code == "OK") {
+          this.componentDidMount()
+          console.log("left")
+        } else {
+          Alert.alert('Couldn\'t register you for the trip', res.text);
+        }
+      })
+  }
+
+  deleteTrip = () => {
+      TripDS.deleteTrip(this.props.tripId).then((res) => {
+        console.log(res)
+        if(res.code == "OK") {
+          this.props.onRequestClose()
+          Alert.alert('Trip deleted', 'Sorry to see you canceling the trip');
+          console.log("deleted")
+        } else {
+          Alert.alert('Couldn\'t delete the trip', res.text);
+        }
+      })
+  }
+
+  isMine() {
+    return this.state.userId == this.state.trip.driver.id
+  }
+
+  isMeRegistered () {
+    console.log(this.state.trip.passengers)
+    let ids = this.state.trip.passengers.map(p => p.id);
+    return ids.includes(this.state.userId);
   }
 
   render() {
@@ -74,8 +123,15 @@ class TripView extends React.Component {
                       </View>
                   </View>
                   <View  style={styles.separator}/>
-                  {this.props.mode == 'JOIN' ? <ButtonE fontWeight='400' fontSize={20} backgroundColor={colors.orange} title='Join this trip' icon={{name: 'check', size:30}}/> : null }
-
+                  {this.props.mode == 'JOIN' ?
+                  <ButtonE fontWeight='400' fontSize={20} backgroundColor={colors.orange} title='Join this trip'
+                           onPress={this.registerTrip} icon={{name: 'check', size:30}}/> : null }
+                  { (this.props.mode == 'VIEW' && this.isMine()) ?
+                  <ButtonE fontWeight='400' fontSize={20} backgroundColor={colors.orange} title='Delete this trip'
+                           onPress={this.deleteTrip} icon={{name: 'check', size:30}}/> : null }
+                  { (this.props.mode == 'VIEW' && this.isMeRegistered()) ?
+                  <ButtonE fontWeight='400' fontSize={20} backgroundColor={colors.orange} title='Leave this trip'
+                           onPress={this.leaveTrip} icon={{name: 'check', size:30}}/> : null }
               </View>
               : <ActivityIndicator size="large" color={colors.orange}/> }
           </View>
@@ -120,7 +176,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: '500',
     color: colors.blue,
-    width: '15%'
+    width: '16%'
   },
   info: {
     flexDirection: 'row',

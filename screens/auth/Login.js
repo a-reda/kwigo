@@ -29,7 +29,8 @@ class LoginScreen extends React.Component {
           Alert.alert(res.text);
           break;
         case 'TOKEN':
-          AsyncStorage.setItem('userToken', res.text);
+          AsyncStorage.setItem('userToken', res.text); // Waiting to make sure the state is oeky
+          AuthenticationDS.validateToken(res.text);
           this.props.navigation.navigate('App');
           break;
         default:

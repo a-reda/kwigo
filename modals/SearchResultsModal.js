@@ -27,7 +27,6 @@ class SearchResultsModal extends React.Component {
 
   searchTrips() {
     this.setState({results: [], isLoading: true})
-    console.log(this.state.date)
     TripDS.searchTrips(this.props.searchTrip.departure, this.props.searchTrip.arrival, this.state.date).then((trips) => {
       this.setState({results: trips, isLoading: false})
     })

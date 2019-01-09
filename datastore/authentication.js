@@ -1,12 +1,13 @@
 import gql from "graphql-tag";
-
+import {AsyncStorage} from "react-native";
 import { client } from './config';
 
-const validateToken = (token) => {
+const validateToken = async (token) => {
   const VALIDATE_TOKEN = gql`
   {
   userByToken(token: \"${token}\")
       {
+        id
         name
         email
         password
@@ -14,7 +15,12 @@ const validateToken = (token) => {
     }
   `
   return client.query({query: VALIDATE_TOKEN})
-          .then(res => res.data.userByToken).catch((err) => {
+          .then(res => {
+            const user = res.data.userByToken
+            if(user) AsyncStorage.setItem('userId', user.id)
+            return user ? user : {message: "UNAUTHORIZED"}
+          })
+            .catch((err) => {
             console.log(err)
           })
 }
@@ -34,6 +40,7 @@ const login = (email, password) => {
       return res.data.login
     }).catch((err) => console.log(err))
 }
+
 
 export default {
   validateToken: validateToken,

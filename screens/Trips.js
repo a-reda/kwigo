@@ -39,7 +39,6 @@ class TripsScreen extends React.Component {
       this.setState({registeredTrips: trips})
     }))
     Promise.all(promises).then(this.setState({refreshing: false}))
-
   }
 
   onTripSelected = (id) => {
@@ -66,6 +65,7 @@ class TripsScreen extends React.Component {
           { this.state.selectedTrip ?
           <TripViewModal
                 visible={true}
+                mode='VIEW'
                 tripId={this.state.selectedTrip}
                 onRequestClose={this.onRequestClose}
           />  : null}
@@ -74,7 +74,7 @@ class TripsScreen extends React.Component {
       </ ScrollView>
     );
 
-    var registeredTrips = (
+    var RegisteredTrips = (
       <ScrollView
         style={styles.container}
         refreshControl={
@@ -96,7 +96,7 @@ class TripsScreen extends React.Component {
           case 'current':
             return CurrentTrips;
           case 'past':
-            return registeredTrips;
+            return RegisteredTrips;
           default:
             null
         }

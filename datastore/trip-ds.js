@@ -67,24 +67,70 @@ const findTripById = (id) => {
       findTripById(id: \"${id}\")
       { id departure{city latitude longitude name}
         arrival{city latitude longitude name}
-        driver{name car} date price
+        driver{id name car} date price
         passengersCount
-        passengers {name}
+        passengers {id name}
       }
 
     }
   `
     console.log(FIND_TRIP)
     return client.query({ query: FIND_TRIP, fetchPolicy: 'no-cache'}).then(res => {
-      console.log(res);
       return res.data.findTripById;
+    })
+}
+
+const registerTrip = (tripId) => {
+    const REGISTER = gql`
+    mutation registerTrip($tripId: String!) {
+      register(tripId: $tripId) {
+        code text
+      }
+    }
+    `
+    return client.mutate({ mutation: REGISTER, variables: {tripId: tripId}}).then(res => {
+      console.log(res.data.register)
+      return res.data.register
     }).catch((err) => console.log(err))
 }
+
+const deleteTrip = (tripId) => {
+    const DELETE = gql`
+    mutation deleteTrip($tripId: String!) {
+      deleteTrip(tripId: $tripId) {
+        code text
+      }
+    }
+    `
+    return client.mutate({ mutation: DELETE, variables: {tripId: tripId}}).then(res => {
+      console.log(res.data.deleteTrip)
+      return res.data.deleteTrip
+    }).catch((err) => console.log(err))
+}
+
+const leaveTrip = (tripId) => {
+    const LEAVE = gql`
+    mutation leaveTrip($tripId: String!) {
+      leaveTrip(tripId: $tripId) {
+        code text
+      }
+    }
+    `
+    return client.mutate({ mutation: LEAVE, variables: {tripId: tripId}}).then(res => {
+      console.log(res.data.leaveTrip)
+      return res.data.leaveTrip
+    }).catch((err) => console.log(err))
+}
+
+
 
 export default {
   createTrip: createTrip,
   getMyTrips: getMyTrips,
   searchTrips: searchTrips,
   findTripById: findTripById,
-  registeredTrips: registeredTrips
+  registeredTrips: registeredTrips,
+  registerTrip: registerTrip,
+  leaveTrip: leaveTrip,
+  deleteTrip: deleteTrip
 }

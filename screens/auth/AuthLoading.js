@@ -31,7 +31,7 @@ class AuthLoadingScreen extends React.Component {
         if (!val) this.setState({text: 'We are having problems reaching the server ...'});
       }
       // User should be stored here and state updated
-      this.props.navigation.navigate(val ? 'App' : 'Login');
+      this.props.navigation.navigate(val.id ? 'App' : 'Login');
     } else {
       this.props.navigation.navigate('Login');
     }
