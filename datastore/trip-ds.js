@@ -25,8 +25,12 @@ const getMyTrips = async (trip) => {
     const GET_MY_TRIPS = gql`
     {
       getMyTrips{
-        id
-        departure{city} arrival{city} driver{name} date price}
+        id departure{city latitude longitude name}
+          arrival{city latitude longitude name}
+          driver{id name car} date price
+          passengersCount
+          passengers {id name}
+        }
     }
   `
     return client.query({ query: GET_MY_TRIPS, fetchPolicy: 'no-cache'}).then(res => {
@@ -38,8 +42,12 @@ const registeredTrips = async (trip) => {
     const REGISTRED_TRIPS = gql`
     {
       registeredTrips{
-        id
-        departure{city} arrival{city} driver{name} date price}
+        id departure{city latitude longitude name}
+          arrival{city latitude longitude name}
+          driver{id name car} date price
+          passengersCount
+          passengers {id name}
+        }
     }
   `
     return client.query({ query: REGISTRED_TRIPS, fetchPolicy: 'no-cache'}).then(res => {
@@ -122,6 +130,32 @@ const leaveTrip = (tripId) => {
     }).catch((err) => console.log(err))
 }
 
+const setPosition = (latitude, longitude) => {
+    const SET_POSITION = gql`
+    mutation setPosition($latitude: Float!, $longitude: Float!) {
+      setPosition(latitude: $latitude, longitude: $longitude) {
+        code text
+      }
+    }
+    `
+    return client.mutate({ mutation: SET_POSITION, variables: {latitude: latitude, longitude: longitude}}).then(res => {
+      console.log(res.data.setPosition)
+      return res.data.setPosition
+    }).catch((err) => console.log(err))
+}
+
+const getPositions = (tripId) => {
+    const GET_POSITIONS = gql`
+    {
+      getPositions(tripId: \"${tripId}\")
+      { latitude longitude userId }
+    }
+  `
+    return client.query({ query: GET_POSITIONS, fetchPolicy: 'no-cache'}).then(res => {
+      return res.data.getPositions;
+    })
+}
+
 
 
 export default {
@@ -132,5 +166,7 @@ export default {
   registeredTrips: registeredTrips,
   registerTrip: registerTrip,
   leaveTrip: leaveTrip,
-  deleteTrip: deleteTrip
+  deleteTrip: deleteTrip,
+  setPosition: setPosition,
+  getPositions: getPositions
 }

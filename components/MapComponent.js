@@ -15,7 +15,6 @@ class MapComponent extends React.Component {
 
     if (this.props.points) {
       const center = geolib.getCenter([points.departure, points.arrival]);
-
       return (
       <View style={styles.container}>
           <MapView

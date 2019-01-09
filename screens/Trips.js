@@ -5,7 +5,6 @@ import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
 import TripViewModal from '../modals/TripViewModal';
 
-
 import SearchComponent from '../components/SearchComponent';
 import TripList from '../components/TripList';
 

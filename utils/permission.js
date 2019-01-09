@@ -6,14 +6,10 @@ async function requestLocationPermission() {
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       {
         'title': 'Kwigo needs to access your location',
-        'message': 'Kwigo needs to know where you are to get you safely to your driver'
+        'message': 'Kwigo needs to know where you are to get you to your driver'
       }
     )
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log("You can use the location")
-    } else {
-      console.log("Location permission denied")
-    }
+    return (granted === PermissionsAndroid.RESULTS.GRANTED)
   } catch (err) {
     console.warn(err)
   }
