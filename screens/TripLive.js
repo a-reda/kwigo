@@ -82,7 +82,7 @@ class TripLive extends React.Component {
     trips.sort((a,b) => (a.date-b.date));
     if(trips.length) this.setState({nextTrip: trips[0]}, () => {
       this.getPositions();
-      setInterval(this.getPositions, 10000)
+      this.interval = setInterval(this.getPositions, 10000);
     });
   }
 
@@ -94,6 +94,7 @@ class TripLive extends React.Component {
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
+    clearInterval(this.interval)
   }
 
   getLocationObject(lat,lon) {
@@ -102,7 +103,7 @@ class TripLive extends React.Component {
 
    getDistance = (userId, dep) => { // Clumsy but working
      if(this.state.userId) {
-       var position = {latitude: 0, longitude: 0};
+       var position = null;
        console.log(userId, this.state.userId)
        if(this.state.userId == userId) {
          position = this.state.userPosition;
@@ -111,8 +112,9 @@ class TripLive extends React.Component {
             if (this.state.positions[i].userId == userId) position = this.state.positions[i];
          }
        }
-       return geolib.getDistance(dep, position)/1000;
-     } else {console.log('notfound...?'); return 0;};
+       if (position) return (geolib.getDistance(dep, position)/1000).toFixed(1) + ' km';
+       else return '--';
+     } else {console.log('notfound...?'); return '--';};
   }
 
   render() {
@@ -120,9 +122,8 @@ class TripLive extends React.Component {
     console.log(this.state)
     return (
       <View style = {styles.container}>
-      <Text>{this.state.locationPermission ? 'Location ON' : 'Location OFF'} {JSON.stringify(this.state.userPosition)}</Text>
       { trip.date ?
-      <View>
+      <ScrollView>
           { (this.state.locationPermission && this.state.userPosition) ?
           <MapLiveComponent initialPosition={this.getLocationObject(trip.departure.latitude,trip.departure.longitude)}
                             departure={this.getLocationObject(trip.departure.latitude,trip.departure.longitude)}
@@ -146,7 +147,7 @@ class TripLive extends React.Component {
               <Icon name="steering" type="material-community" size={40} color={colors.orange}/>
               <Text style={styles.mediumD}>{trip.driver.name}</Text>
             </View>
-            <Text style={styles.distance}>{1} km</Text>
+            <Text style={styles.distance}>{this.getDistance(trip.driver.id, trip.departure)}</Text>
           </View>
           {this.state.nextTrip.passengers.map((e,i) => (
             <View style={styles.passenger} key={i}>
@@ -154,7 +155,7 @@ class TripLive extends React.Component {
                 <Icon name="user" type="feather" size={40} color={colors.blue}/>
                 <Text style={styles.mediumD}>{e.name}</Text>
               </View>
-              {trip.departure ? <Text style={styles.distance}>{this.getDistance(e.id, trip.departure)} km</Text> : null }
+              <Text style={styles.distance}>{this.getDistance(e.id, trip.departure)}</Text>
             </View>)
           )}
           <View style={styles.separator}/>
@@ -169,7 +170,7 @@ class TripLive extends React.Component {
               </View>
           </View>
           <View  style={styles.separator}/>
-      </View>
+      </ScrollView>
       : <ActivityIndicator size="large" color={colors.orange}/> }
       </View>
     );
