@@ -12,12 +12,8 @@ class MapLiveComponent extends React.Component {
 
   render() {
     const user = this.props.user;
-    console.log(this.props.positions)
-    console.log(user)
-
     const markers =  this.props.positions.map((e,i) => {
-      console.log(e)
-      return (<Marker key={i} pinColor={colors.orange} coordinate={e}/>)
+      return (<Marker key={i} pinColor={e.color} coordinate={e}/>)
     });
 
     if (this.props.user && this.props.departure && this.props.arrival) {
@@ -33,10 +29,6 @@ class MapLiveComponent extends React.Component {
             longitudeDelta: 0.03
             }}
           >
-          <Marker
-            coordinate={user}
-            pinColor={colors.blue}
-          />
           <Marker key="departure"
             coordinate={this.props.departure}
             image={require('../assets/departure.png')}

@@ -9,4 +9,5 @@ export default {
   purple: "#2B061E",
   busy: "#B22222",
   available: "#228B22",
+  markers: ["#ff6565","#f0e57b","#87f69f","#ea9df9","#8ff0e4"]
 }

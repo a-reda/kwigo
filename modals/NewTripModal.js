@@ -39,7 +39,6 @@ class NewTripModal extends React.Component {
     this.setState({isSubmitting: true})
     const s = this.state;
     const flag = s.departure && s.arrival && s.passengersCount
-    console.log(s);
     if (!flag) {
         Alert.alert('Missing information:',
                     `${!s.departure ? 'Departure location' : ''}\
@@ -48,7 +47,6 @@ class NewTripModal extends React.Component {
         )
     } else {
        const trip = tools.prepareTrip(s)
-       console.log(trip)
        TripDS.createTrip(trip).then((res) => {
               Alert.alert("Trip created successfully!")
               this.props.toggleShow();

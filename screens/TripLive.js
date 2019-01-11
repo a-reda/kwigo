@@ -4,7 +4,7 @@ import React, {
 import {
   StyleSheet, ActivityIndicator,
   Text, AsyncStorage,
-  TextInput,
+  TextInput, Switch,
   ScrollView,
   View,
   Button
@@ -32,6 +32,7 @@ class TripLive extends React.Component {
       nextTrip: {},
       nextTripActive:false,
       locationPermission: false,
+      liveEnabled: true,
       positions: []
     };
   }
@@ -48,7 +49,6 @@ class TripLive extends React.Component {
       navigator.geolocation.getCurrentPosition((position) => this.updateUserPosition(position))
       this.watchId = navigator.geolocation.watchPosition(
         (position) => {
-          console.log(position)
           this.updateUserPosition(position)
         },
         (error) => this.setState({
@@ -60,13 +60,12 @@ class TripLive extends React.Component {
           distanceFilter: 10
         },
       );
-      console.log("watcher set")
     }
   }
 
   getPositions = () => {
     TripDS.getPositions(this.state.nextTrip.id).then((pos) => {
-      console.log(pos.length)
+      pos.forEach((e,i) => e.color = colors.markers[i])
       this.setState({positions: pos})
     })
   }
@@ -82,7 +81,7 @@ class TripLive extends React.Component {
     trips.sort((a,b) => (a.date-b.date));
     if(trips.length) this.setState({nextTrip: trips[0]}, () => {
       this.getPositions();
-      this.interval = setInterval(this.getPositions, 10000);
+      this.interval = setInterval(this.getPositions, 5000);
     });
   }
 
@@ -101,10 +100,15 @@ class TripLive extends React.Component {
     return {latitude: lat, longitude: lon}
   }
 
+  findColor(userId) {
+    var color = null;
+    this.state.positions.forEach((e) => {if(userId == e.userId) color = e.color});
+    return color;
+  }
+
    getDistance = (userId, dep) => { // Clumsy but working
      if(this.state.userId) {
        var position = null;
-       console.log(userId, this.state.userId)
        if(this.state.userId == userId) {
          position = this.state.userPosition;
        } else {
@@ -117,18 +121,67 @@ class TripLive extends React.Component {
      } else {console.log('notfound...?'); return '--';};
   }
 
+  activateLive = () => {
+    // Stop and start this
+    if(this.state.liveEnabled) {
+      this.componentWillUnmount()
+    } else {
+      this.componentDidMount();
+    }
+    this.setState({liveEnabled: !this.state.liveEnabled})
+  }
+
+  getAlternativePage = () => {
+    const trip = this.state.nextTrip;
+
+    if(!trip.date) {
+      return (<ActivityIndicator size="large" color={colors.orange}/>);
+    } else if (trip.date && !this.state.liveEnabled) {
+      return (
+        <View style={{justifyContent: 'center', alignContent: 'center'}}>
+        <Text style={styles.instructions}>Your next trip</Text>
+        <View style={styles.separator}/>
+        <View style={styles.places}>
+          <View style={styles.arrival}>
+            <Text style={styles.big}>{trip.departure.city}</Text>
+            <Text style={styles.small}>{trip.departure.name}</Text>
+          </View>
+          <View style={styles.destination}>
+            <Text style={styles.big}>{trip.arrival.city}</Text>
+            <Text style={styles.small}>{trip.arrival.name}</Text>
+          </View>
+        </View>
+        <View style={styles.separator}/>
+        <View style={{height:30}}/>
+        <Text style={styles.instructions}>Enable live location to see the positions of other users</Text>
+        </View>
+      );
+    } else if (!trip.date) {
+      <Text>No trip available, come back when you register to a trip</Text>
+    }
+
+
+  }
+
   render() {
     const trip = this.state.nextTrip;
     console.log(this.state)
     return (
       <View style = {styles.container}>
-      { trip.date ?
+        <View style={{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', height: 50}}>
+             <Text style={styles.small}>{this.state.liveEnabled ? 'Disable' : 'Enable'} live location</Text>
+             <Switch style={styles.switch}
+             value={this.state.liveEnabled}
+             thumbColor={colors.orange} ios_backgroundColor={colors.orange}
+             onValueChange={this.activateLive}/>
+         </View>
+      { (trip.date && this.state.liveEnabled) ?
       <ScrollView>
           { (this.state.locationPermission && this.state.userPosition) ?
           <MapLiveComponent initialPosition={this.getLocationObject(trip.departure.latitude,trip.departure.longitude)}
                             departure={this.getLocationObject(trip.departure.latitude,trip.departure.longitude)}
                             arrival={this.getLocationObject(trip.arrival.latitude,trip.arrival.longitude)}
-                            positions={this.state.positions.map((e) => this.getLocationObject(e.latitude, e.longitude))}
+                            positions={this.state.positions}
                             user={this.state.userPosition} /> : null
           }
           <View style={styles.places}>
@@ -144,7 +197,7 @@ class TripLive extends React.Component {
           <View style={styles.separator}/>
           <View style={styles.passenger}>
             <View style={styles.passengerSingle}>
-              <Icon name="steering" type="material-community" size={40} color={colors.orange}/>
+              <Icon name="steering" type="material-community" size={40} color={this.findColor(trip.driver.id)}/>
               <Text style={styles.mediumD}>{trip.driver.name}</Text>
             </View>
             <Text style={styles.distance}>{this.getDistance(trip.driver.id, trip.departure)}</Text>
@@ -152,7 +205,7 @@ class TripLive extends React.Component {
           {this.state.nextTrip.passengers.map((e,i) => (
             <View style={styles.passenger} key={i}>
               <View style={styles.passengerSingle}>
-                <Icon name="user" type="feather" size={40} color={colors.blue}/>
+                <Icon name="user" type="feather" size={40} color={this.findColor(e.id)}/>
                 <Text style={styles.mediumD}>{e.name}</Text>
               </View>
               <Text style={styles.distance}>{this.getDistance(e.id, trip.departure)}</Text>
@@ -171,7 +224,7 @@ class TripLive extends React.Component {
           </View>
           <View  style={styles.separator}/>
       </ScrollView>
-      : <ActivityIndicator size="large" color={colors.orange}/> }
+      : this.getAlternativePage() }
       </View>
     );
   }
@@ -233,6 +286,14 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: colors.blue,
     paddingRight: 10
+  },
+  switch: {
+    paddingLeft: 10
+  },
+  instructions: {
+    fontSize: 20,
+    fontWeight: '400',
+    alignSelf:'center'
   }
 });
 
