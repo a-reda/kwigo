@@ -30,10 +30,10 @@ class TripLive extends React.Component {
       userPosition: null,
       error: null,
       nextTrip: {},
-      nextTripActive:false,
       locationPermission: false,
-      liveEnabled: true,
-      positions: []
+      liveEnabled: false,
+      positions: [],
+      isLoading: true
     };
   }
 
@@ -50,6 +50,7 @@ class TripLive extends React.Component {
       this.watchId = navigator.geolocation.watchPosition(
         (position) => {
           this.updateUserPosition(position)
+          this.setState({error: null})
         },
         (error) => this.setState({
           error: error.message
@@ -70,15 +71,40 @@ class TripLive extends React.Component {
     })
   }
 
-  async componentDidMount() {
-    this.askLocationPermission()
+  nowDate = () => {
+    return new Date();
+  }
+
+  isTripActive = (date) => {
+    if(date) {
+    const now = this.nowDate();
+    const nowPlusOne = this.nowDate().setHours(now.getHours() + 1);
+    const nowMinusOne = this.nowDate().setHours(now.getHours() - 1);
+    return date > nowMinusOne && date < nowPlusOne } else {return false}
+  }
+
+  componentDidMount() {
+    this.askLocationPermission();
+    this.updateNextTrip();
+
+    this.willFocusListener = this.props.navigation.addListener('willFocus', (payload) => {
+        if(!this.state.nextTrip.date) {
+          this.updateNextTrip();
+        }
+      });
+  }
+
+  async updateNextTrip() {
+    this.setState({isLoading: true});
     var userId = await AsyncStorage.getItem('userId').then((i) => this.setState({userId: i}))
-    // TODO:  This can go to a util function
     var trips = await Promise.all([TripDS.registeredTrips(), TripDS.getMyTrips()])
             .then((trips) => {
               return  trips[0].concat(trips[1]);
             });
+
+    trips = trips.filter((e) => e.date > this.nowDate());
     trips.sort((a,b) => (a.date-b.date));
+    this.setState({isLoading: false});
     if(trips.length) this.setState({nextTrip: trips[0]}, () => {
       this.getPositions();
       this.interval = setInterval(this.getPositions, 5000);
@@ -93,7 +119,8 @@ class TripLive extends React.Component {
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
-    clearInterval(this.interval)
+    clearInterval(this.interval);
+    this.willFocusListener.remove();
   }
 
   getLocationObject(lat,lon) {
@@ -134,7 +161,7 @@ class TripLive extends React.Component {
   getAlternativePage = () => {
     const trip = this.state.nextTrip;
 
-    if(!trip.date) {
+    if(this.state.isLoading) {
       return (<ActivityIndicator size="large" color={colors.orange}/>);
     } else if (trip.date && !this.state.liveEnabled) {
       return (
@@ -157,12 +184,16 @@ class TripLive extends React.Component {
         </View>
         <View style={styles.separator}/>
         <View style={{justifyContent: 'center', alignContent: 'center', padding:10}}>
-          <Text style={styles.instructions}>Enable live location to see the positions of other users</Text>
+          <Text style={styles.instructions}>{ this.isTripActive(trip.date) ? "Enable live location to see the positions of other users" : "Trip live location will start one hour before the trip" }</Text>
         </View>
         </View>
       );
     } else if (!trip.date) {
-      <Text>No trip available, come back when you register to a trip</Text>
+      return (
+        <View style={{justifyContent: 'center', alignContent: 'center', padding:10}}>
+        <Text style={styles.instructions}>No trip available, come back when you have a trip upcoming</Text>
+        </View>
+      );
     }
 
 
@@ -170,13 +201,14 @@ class TripLive extends React.Component {
 
   render() {
     const trip = this.state.nextTrip;
-    console.log(this.state)
+    // console.log(this.state)
     return (
       <View style = {styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', height: 50}}>
-             <Text style={styles.small}>{this.state.liveEnabled ? 'Disable' : 'Enable'} live location</Text>
+             <Text style={styles.small}>Live location</Text>
              <Switch style={styles.switch}
              value={this.state.liveEnabled}
+             disabled={!this.isTripActive(trip.date)}
              thumbColor={colors.orange} ios_backgroundColor={colors.orange}
              onValueChange={this.activateLive}/>
          </View>

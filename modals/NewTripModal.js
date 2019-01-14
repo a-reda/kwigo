@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, Alert, Modal, View,
+import { StyleSheet, Text, Alert, Modal, View, AsyncStorage,
           ScrollView, Button, TouchableOpacity,
           DatePickerAndroid, TimePickerAndroid } from 'react-native';
 
@@ -49,7 +49,9 @@ class NewTripModal extends React.Component {
        const trip = tools.prepareTrip(s)
        TripDS.createTrip(trip).then((res) => {
               Alert.alert("Trip created successfully!")
-              this.props.toggleShow();
+              AsyncStorage.setItem('shouldRefreshTrips', 'true').then(() => {
+                this.props.toggleShow(true);
+              });
         }).catch((err) => {
           Alert.alert("Trip creation error", err.toString())})
 

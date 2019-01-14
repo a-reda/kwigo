@@ -2,7 +2,7 @@ import {createBottomTabNavigator, createAppContainer, createSwitchNavigator} fro
 import Icons from 'react-native-vector-icons/Ionicons';
 import React from "react"
 
-
+import { Text } from 'react-native';
 // Screens
 import Main from './screens/newtrip/trips'
 import TripsScreen from './screens/Trips'
@@ -30,13 +30,31 @@ const AppNavigator = createBottomTabNavigator({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
         let iconName = `md-car`;
-        if (routeName === 'Login') {
-          iconName = `md-car`;
-        } else if (routeName === 'Main') {
+        if (routeName === 'Main') {
           iconName = `md-search`;
+        } else if (routeName === 'TripLive') {
+          iconName = `md-locate`;
+        } else if (routeName === 'User') {
+          iconName = `md-person`;
+        } else if (routeName === 'Trips') {
+          iconName = `md-list`;
         }
         return <Icons name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
       },
+    tabBarLabel: ({ focused, tintColor }) => {
+        const { routeName } = navigation.state;
+        let text = ``;
+        if (routeName === 'Main') {
+          text = `Search`;
+        } else if (routeName === 'TripLive') {
+          text = `Live`;
+        } else if (routeName === 'User') {
+          text = `Profile`;
+        } else if (routeName === 'Trips') {
+          text = `Trips`;
+        }
+        return <Text style={{alignSelf: 'center'}}>{text}</Text>;
+      }
     }),
     tabBarOptions: {
       activeTintColor: colors.orange,

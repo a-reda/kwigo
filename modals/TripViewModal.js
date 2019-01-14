@@ -36,7 +36,7 @@ class TripView extends React.Component {
       TripDS.registerTrip(this.props.tripId).then((res) => {
         if(res.code == "OK") {
           this.componentDidMount()
-          console.log("registered")
+          this.props.onRequestClose(true)
         } else {
           Alert.alert('Couldn\'t register you for the trip', res.text);
         }
@@ -47,7 +47,7 @@ class TripView extends React.Component {
       TripDS.leaveTrip(this.props.tripId).then((res) => {
         if(res.code == "OK") {
           this.componentDidMount()
-          console.log("left")
+          this.props.onRequestClose(true)
         } else {
           Alert.alert('Couldn\'t register you for the trip', res.text);
         }
@@ -58,9 +58,8 @@ class TripView extends React.Component {
       TripDS.deleteTrip(this.props.tripId).then((res) => {
         console.log(res)
         if(res.code == "OK") {
-          this.props.onRequestClose()
           Alert.alert('Trip deleted', 'Sorry to see you canceling the trip');
-          console.log("deleted")
+          this.props.onRequestClose(true)
         } else {
           Alert.alert('Couldn\'t delete the trip', res.text);
         }
@@ -92,7 +91,7 @@ class TripView extends React.Component {
                 name="md-arrow-round-back"
                 type="ionicon"
                 size={55}
-                onPress={() => this.props.onRequestClose(false)}
+                onPress={() => this.props.onRequestClose()}
                 color={colors.orange}/>
                 <Text style={styles.price}>{trip.price} {trip.date ? '€' : null}</Text>
             </View>

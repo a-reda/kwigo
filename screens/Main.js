@@ -18,10 +18,11 @@ class MainScreen extends React.Component {
     searchTrip: {}
   };
 
-  toggleShow = () => {
+  toggleShow = (flag) => {
       // Here it should get if a new trip was created
       this.setState(state => ({ newTripModalVisible: !state.newTripModalVisible }));
-  };
+      if(flag) this.props.navigation.navigate('Trips');
+   };
 
   toggleShowSearch = (trip) => {
       // Here it should get if a new trip was created

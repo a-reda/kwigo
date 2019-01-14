@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { View, StyleSheet, Text, TextInput, ScrollView, Button, Dimensions, RefreshControl} from 'react-native';
+import { View, StyleSheet, Text, TextInput, ScrollView, AsyncStorage,
+          Button, Dimensions, RefreshControl} from 'react-native';
 
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
@@ -28,18 +29,27 @@ class TripsScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.willFocusListener = this.props.navigation.addListener('willFocus', (payload) => {
+       AsyncStorage.getItem('shouldRefreshTrips').then((val) => {
+         if(val == 'true') {
+           this.refreshState();
+           AsyncStorage.setItem('shouldRefreshTrips', 'false');
+         }
+       })
+    });
+    this.refreshState();
+  }
 
-    this.willFocusListener = this.props.navigation.addListener('willFocus', (payload) => console.log(payload));
+  refreshState = () => {
     this.setState({refreshing: true});
     promises = [];
     promises.push(TripDS.getMyTrips().then((trips) => {
       this.setState({offeredTrips: trips})
     }))
     promises.push(TripDS.registeredTrips().then((trips) => {
-      console.log(trips)
       this.setState({registeredTrips: trips})
     }))
-    Promise.all(promises).then(this.setState({refreshing: false}))
+    Promise.all(promises).then(this.setState({refreshing: false}));
   }
 
   componentWillUnmount() {
@@ -47,11 +57,11 @@ class TripsScreen extends React.Component {
   }
 
   onTripSelected = (id) => {
-    console.log(id)
     this.setState({selectedTrip: id})
   }
 
-  onRequestClose = (id) => {
+  onRequestClose = (result) => {
+    if(result) this.refreshState();
     this.setState({selectedTrip: ''})
   }
 
@@ -64,7 +74,7 @@ class TripsScreen extends React.Component {
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
-            onRefresh={this.componentDidMount.bind(this)}
+            onRefresh={this.refreshState}
           />
         }>
           { this.state.selectedTrip ?
@@ -74,8 +84,8 @@ class TripsScreen extends React.Component {
                 tripId={this.state.selectedTrip}
                 onRequestClose={this.onRequestClose}
           />  : null}
-          <TripList onTripSelected={this.onTripSelected} title="Joined trips" trips={this.state.registeredTrips}/>
-          <TripList onTripSelected={this.onTripSelected} title="Offered trips" trips={this.state.offeredTrips}/>
+          <TripList onTripSelected={this.onTripSelected} title="Joined trips" trips={this.state.registeredTrips.filter((e) => e.date >= (new Date()))}/>
+          <TripList onTripSelected={this.onTripSelected} title="Offered trips" trips={this.state.offeredTrips.filter((e) => e.date >= (new Date()))}/>
       </ ScrollView>
     );
 
@@ -85,11 +95,11 @@ class TripsScreen extends React.Component {
         refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
-            onRefresh={this.componentDidMount}
+            onRefresh={this.refreshState}
           />
         }>
-          <TripList onTripSelected={this.onTripSelected} title="Joined trips" trips={this.state.registeredTrips}/>
-          <TripList onTripSelected={this.onTripSelected} title="Offered trips" trips={this.state.offeredTrips}/>
+          <TripList onTripSelected={this.onTripSelected} title="Joined trips" trips={this.state.registeredTrips.filter((e) => e.date < (new Date()))}/>
+          <TripList onTripSelected={this.onTripSelected} title="Offered trips" trips={this.state.offeredTrips.filter((e) => e.date < (new Date()))}/>
       </ ScrollView>
     );
 
