@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from 'react-native';
+
+import OccupancyComponent from './OccupancyComponent';
 
 import { Icon } from 'react-native-elements';
 
@@ -8,7 +10,7 @@ import colors from "../styling/colors";
 class PassengersComponent extends React.Component {
 
   state = {
-    count: 1
+    count: 3
   }
 
   countChange(op) {
@@ -28,22 +30,21 @@ class PassengersComponent extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-          <View style={styles.passengersTitle}>
-            <Text style={styles.title}>Passengers</Text>
-          </View>
-      <View style={styles.counterRow}>
+        <TouchableOpacity style={styles.opacity} onPress={() => this.countChange('-')}>
         <Icon name="ios-remove-circle"
               type="ionicon"
               size={50}
-              onPress={() => this.countChange('-')}
               color={colors.orange}/>
-        <Text style={styles.numberText}>{this.state.count}</Text>
+        </TouchableOpacity>
+        <View style={{flexGrow: 1, justifyContent: 'center'}}>
+              <OccupancyComponent  available={this.state.count} busy={0}/>
+        </View>
+        <TouchableOpacity style={styles.opacity} onPress={() => this.countChange('+')}>
         <Icon name="ios-add-circle"
               type="ionicon"
               size={50}
-              onPress={() => this.countChange('+')}
               color={colors.orange}/>
-        </View>
+        </TouchableOpacity>
         </View>
     );
   }
@@ -54,6 +55,10 @@ const styles = StyleSheet.create({
      padding: 10,
      alignItems: 'center',
      flexDirection: 'row'
+   },
+   opacity: {
+
+    padding: 5
    },
    counterRow: {
      flexDirection: 'row',

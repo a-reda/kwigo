@@ -23,12 +23,12 @@ class NewTripModal extends React.Component {
 
   constructor(props) {
   super(props);
-  var date = new Date(); date.setHours(8
-  ); date.setMinutes(0);
+  var date = new Date(); date.setHours(date.getHours()+2
+); date.setMinutes(0);
   this.state = {
         departure: null,
         arrival: null,
-        passengersCount: 1,
+        passengersCount: 3,
         price: 0,
         date: date,
         isSubmitting: false
@@ -86,15 +86,15 @@ class NewTripModal extends React.Component {
   }
 
   async datePickerModal () {
-    const {action,year,month,day}  = await DatePickerAndroid.open({date: this.state.date});
+    const {action,year,month,day}  = await DatePickerAndroid.open({date: this.state.date, minDate: (new Date())});
     if (action != DatePickerAndroid.dismissedAction) {
       this.setState({date: new Date(year,month,day,this.state.date.getHours(), this.state.date.getMinutes(),0,0)})
     }
   }
 
   async timePickerModal () {
-    const {action,hour,minute} = await TimePickerAndroid.open({hour: this.state.date.getHours(), minute: this.state.date.getMinutes()});
-    if (action != DatePickerAndroid.dismissedAction) {
+    const {action,hour,minute} = await TimePickerAndroid.open({is24Hour: true, hour: this.state.date.getHours(), minute: this.state.date.getMinutes()});
+    if (action != TimePickerAndroid.dismissedAction) {
       const o = this.state.date
       const d = new Date(o.getFullYear(), o.getMonth(), o.getDate(), hour, minute,0,0);
       this.setState({date: d})
@@ -124,7 +124,19 @@ class NewTripModal extends React.Component {
   }
 
   getCityText(type) {
-    return this.state[type] ? `${this.state[type].name}${this.state[type].city ? (" - " + this.state[type].city) : ''}`  : '';
+    return this.state[type] ? this.state[type].city : (type == 'arrival' ? 'To' : 'From');
+  }
+  getMeetingText(type) {
+    return this.state[type] ? this.shortenName(this.state[type].name) : 'Touch to select';
+  }
+
+  shortenName(string) {
+    const max = 25
+    if (string) {
+      return string.length < max ? string : string.slice(0,max)+'...';
+    }
+    else { return '' };
+
   }
 
   render() {
@@ -145,44 +157,31 @@ class NewTripModal extends React.Component {
             color={colors.orange}/>
         </View>
         <MapComponent points={tools.getDepArrCoordinates(this.state.departure, this.state.arrival)}/>
-          <View style={styles.placePicker}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Text style ={styles.bigText}>Departure</Text>
-                <View style={{justifyContent: 'flex-end', width: '50%'}}>
-                <Icon
-                  name={this.state.departure ? 'edit-location' : 'add-location'}
-                  size={50}
-                  onPress={() => this.openPickModal('departure')}
-                  color={colors.orange}/>
-            </View>
-            </View>
-            <Text style={styles.pickText}>{this.getCityText('departure')}</Text>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                  <Text style ={styles.bigText}>Arrival</Text>
-                  <View style={{justifyContent: 'flex-end', width: '50%'}}>
-                  <Icon
-                    name={this.state.arrival ? 'edit-location' : 'add-location'}
-                    size={50}
-                    onPress={() => this.openPickModal('arrival')}
-                    color={colors.orange}/>
-              </View>
-              </View>
-            <Text style={styles.pickText}>{this.getCityText('arrival')}</Text>
-          </View>
-          <PassengersComponent passengerCountChange={this.passengerCountChange.bind(this)}/>
-          <PriceComponent priceChange={this.priceChange.bind(this)}/>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10}}>
-              <Text style={styles.smallTitle}>Date</Text>
-              <TouchableOpacity onPress={this.datePickerModal.bind(this)} style={{width: '50%', justifyContent: 'center'}}>
+        <View style={styles.separator}/>
+        <View style={styles.places}>
+          <TouchableOpacity onPress={() => this.openPickModal('departure')}>
+            <Text style={styles.big}>{this.getCityText('departure')}</Text>
+            <Text style={styles.small}>{this.getMeetingText('departure')}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.openPickModal('arrival')}>
+            <Text style={styles.big}>{this.getCityText('arrival')}</Text>
+            <Text style={styles.small}>{this.getMeetingText('arrival')}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.separator}/>
+        <PassengersComponent passengerCountChange={this.passengerCountChange.bind(this)}/>
+        <View style={styles.separator}/>
+        <PriceComponent priceChange={this.priceChange.bind(this)}/>
+        <View style={styles.separator}/>
+          <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', padding: 10}}>
+              <TouchableOpacity onPress={this.datePickerModal.bind(this)}>
                 <Text style={styles.greyTitle}>{this.getDepartureDate()}</Text>
               </TouchableOpacity>
-          </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10}}>
-              <Text style={styles.smallTitle}>Time</Text>
-              <TouchableOpacity onPress={this.timePickerModal.bind(this)} style={{width: '50%', justifyContent: 'flex-start'}}>
+              <TouchableOpacity onPress={this.timePickerModal.bind(this)}>
                 <Text style={styles.greyTitle}>{this.getDepartureTime()}</Text>
               </TouchableOpacity>
           </View>
+          <View style={styles.separator}/>
           <ButtonE
               containerViewStyle={{ paddingTop: 20}}
               title='Publish trip'
@@ -204,6 +203,27 @@ const styles = StyleSheet.create({
      flex: 1,
      flexDirection: 'column',
    },
+   separator:{
+     borderBottomColor: colors.lightgrey,
+     borderBottomWidth: 1,
+     marginTop: 10,
+     marginBottom: 10
+   },
+   places: {
+     flexDirection: 'row',
+     padding: 10,
+     justifyContent: 'space-around'
+   },
+   big: {
+     fontSize: 25,
+     alignSelf: 'center',
+     fontWeight: '500',
+     color: colors.blue
+   },
+   small: {
+     fontSize: 15,
+     fontWeight: '200'
+   },
    backIcon: {
      alignSelf: 'flex-start',
      padding: 10
@@ -213,11 +233,6 @@ const styles = StyleSheet.create({
      fontWeight: '500',
      color: colors.purple,
      width: '50%'
-   },
-   placePicker: {
-     justifyContent: 'flex-start',
-     alignItems: 'flex-start',
-     padding: 10
    },
    pickText: {
      fontSize: 20,

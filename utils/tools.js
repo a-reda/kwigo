@@ -45,10 +45,12 @@ function getDepArrCoordinates(dep, arr) { 
 }
 
 function getDepartureDate(d) {
+  if(!d.getDate) d = new Date(d);
   return `${addZero(d.getDate())}/${addZero(d.getMonth()+1)}/${d.getFullYear()}`
 }
 
 function getDepartureTime(d) {
+  if(!d.getDate) d = new Date(d);
   return `${addZero(d.getHours())}:${addZero(d.getMinutes())}`
 }
 

@@ -28,6 +28,8 @@ class TripsScreen extends React.Component {
   }
 
   componentDidMount() {
+
+    this.willFocusListener = this.props.navigation.addListener('willFocus', (payload) => console.log(payload));
     this.setState({refreshing: true});
     promises = [];
     promises.push(TripDS.getMyTrips().then((trips) => {
@@ -38,6 +40,10 @@ class TripsScreen extends React.Component {
       this.setState({registeredTrips: trips})
     }))
     Promise.all(promises).then(this.setState({refreshing: false}))
+  }
+
+  componentWillUnmount() {
+    this.willFocusListener.remove();
   }
 
   onTripSelected = (id) => {

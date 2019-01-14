@@ -138,7 +138,7 @@ class TripLive extends React.Component {
       return (<ActivityIndicator size="large" color={colors.orange}/>);
     } else if (trip.date && !this.state.liveEnabled) {
       return (
-        <View style={{justifyContent: 'center', alignContent: 'center'}}>
+        <View style={{justifyContent: 'center', alignContent: 'center', flexGrow: 1}}>
         <Text style={styles.instructions}>Your next trip</Text>
         <View style={styles.separator}/>
         <View style={styles.places}>
@@ -151,9 +151,14 @@ class TripLive extends React.Component {
             <Text style={styles.small}>{trip.arrival.name}</Text>
           </View>
         </View>
+        <View>
+            <Text style={styles.mediumOrange}>{tools.getDepartureDate(trip.date)}</Text>
+            <Text style={styles.mediumOrange}>{tools.getDepartureTime(trip.date)}</Text>
+        </View>
         <View style={styles.separator}/>
-        <View style={{height:30}}/>
-        <Text style={styles.instructions}>Enable live location to see the positions of other users</Text>
+        <View style={{justifyContent: 'center', alignContent: 'center', padding:10}}>
+          <Text style={styles.instructions}>Enable live location to see the positions of other users</Text>
+        </View>
         </View>
       );
     } else if (!trip.date) {
@@ -244,7 +249,7 @@ const styles = StyleSheet.create({
   places: {
     flexDirection: 'row',
     padding: 10,
-    justifyContent: 'space-between'
+    justifyContent: 'space-around'
   },
   big: {
     fontSize: 25,
@@ -260,6 +265,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: 'center',
     fontWeight: '500'
+  },
+  mediumOrange: {
+    fontSize: 20,
+    alignSelf: 'center',
+    fontWeight: '500',
+    color: colors.orange,
   },
   mediumD: {
     fontSize: 20,
@@ -293,7 +304,7 @@ const styles = StyleSheet.create({
   instructions: {
     fontSize: 20,
     fontWeight: '400',
-    alignSelf:'center'
+    alignSelf: 'center'
   }
 });
 

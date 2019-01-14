@@ -25,7 +25,7 @@ const AppNavigator = createBottomTabNavigator({
   User: {screen: UserScreen}
   },
   {
-  initialRouteName: 'TripLive',
+  initialRouteName: 'Main',
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;

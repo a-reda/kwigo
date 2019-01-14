@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from 'react-native';
 
 import { Icon } from 'react-native-elements';
 
@@ -9,30 +9,26 @@ class PriceComponent extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-          <View style={styles.priceTitle}>
-            <Text style={styles.title}>Contribution</Text>
-          </View>
-          <View style={styles.textInput}>
+      <TouchableOpacity style={styles.container} onPress={() => this.priceInput.focus()}>
           <TextInput
-            style={styles.numberText}
-            defaultValue='0'
+            style={styles.numberTextInput}
+            ref={(input)=> this.priceInput = input}
+            defaultValue='5'
             keyboardType='number-pad'
-            returnKeyType="next"
+            returnKeyType="done"
             placeholderTextColor='black'
             onChangeText={val => this.props.priceChange(val)}
           />
-          <Text style ={styles.numberText}>€/P</Text>
-      </View>
-      </View>
+          <Text style ={styles.numberText}>€/person</Text>
+      </TouchableOpacity>
     );
   }
 }
 
 const styles = StyleSheet.create({
    container: {
-     padding: 10,
      alignItems: 'center',
+     justifyContent: 'center',
      flexDirection: 'row'
    },
    textInput: {
@@ -41,19 +37,15 @@ const styles = StyleSheet.create({
      justifyContent: 'space-evenly',
      width: '50%'
    },
-   numberText: {
-     fontSize: 40,
+   numberTextInput: {
+     fontSize: 30,
      fontWeight: '500',
      color: colors.grey
    },
-   title: {
+   numberText: {
      fontSize: 25,
      fontWeight: '500',
-     color: colors.purple,
-   },
-   priceTitle: {
-     width:'50%',
-     justifyContent: 'flex-start'
+     color: colors.grey
    }
 });
 

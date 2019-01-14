@@ -48,6 +48,7 @@ class LoginScreen extends React.Component {
           break;
         case 'TOKEN':
           AsyncStorage.setItem('userToken', res.text);
+          AuthenticationDS.validateToken(res.text);
           this.props.navigation.navigate('App');
           break;
         default:
