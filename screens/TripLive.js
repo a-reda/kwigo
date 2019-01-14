@@ -336,7 +336,8 @@ const styles = StyleSheet.create({
   instructions: {
     fontSize: 20,
     fontWeight: '400',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    textAlign: 'center'
   }
 });
 

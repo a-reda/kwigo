@@ -21,7 +21,21 @@ const createUser = (user) => {
     }).catch((err) => console.log(err))
 }
 
+const getUser = async (id) => {
+    const GET_USER = gql`
+        {
+          user(id:  \"${id}\")
+          {name email phone_number car}
+        }
+  `
+    return client.query({ query: GET_USER, fetchPolicy: 'no-cache'}).then(res => {
+      return res.data.user;
+    })
+}
+
+
 
 export default {
-  createUser: createUser
+  createUser: createUser,
+  getUser: getUser
 }

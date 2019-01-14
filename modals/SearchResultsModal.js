@@ -34,14 +34,7 @@ class SearchResultsModal extends React.Component {
   }
 
   onRequestClose() {
-        Alert.alert(
-            'No trip satisfies you?',
-            'Create your own!',
-          [
-            {text: 'Cancel', style: 'cancel'},
-            {text: 'OK', onPress: () => this.props.toggleShow()},
-          ],
-            { cancelable: false });
+    
   }
 
   changeDate(n) {

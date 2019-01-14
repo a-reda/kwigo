@@ -25,7 +25,7 @@ const AppNavigator = createBottomTabNavigator({
   User: {screen: UserScreen}
   },
   {
-  initialRouteName: 'Main',
+  initialRouteName: 'User',
   defaultNavigationOptions: ({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
