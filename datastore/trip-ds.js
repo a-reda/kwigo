@@ -97,7 +97,6 @@ const registerTrip = (tripId) => {
     }
     `
     return client.mutate({ mutation: REGISTER, variables: {tripId: tripId}}).then(res => {
-      console.log(res.data.register)
       return res.data.register
     }).catch((err) => console.log(err))
 }
@@ -139,7 +138,6 @@ const setPosition = (latitude, longitude) => {
     }
     `
     return client.mutate({ mutation: SET_POSITION, variables: {latitude: latitude, longitude: longitude}}).then(res => {
-      console.log(res.data.setPosition)
       return res.data.setPosition
     }).catch((err) => console.log(err))
 }

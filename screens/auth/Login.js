@@ -61,8 +61,7 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Kwigo</Text>
-        <Text style={styles.instructions}>We will get you anywhere</Text>
+        <Text style={styles.logo}>Kwigo</Text>
         <View style={styles.formContainer}>
         <TextInput style = {styles.input}
                autoCapitalize="none"
@@ -98,10 +97,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.white,
   },
-  welcome: {
-    fontSize: 20,
+  logo: {
+    color: colors.orange,
+    fontSize: 90,
+    fontFamily: 'Olender Regular',
     textAlign: 'center',
-    margin: 10,
+    margin: 10
   },
   instructions: {
     textAlign: 'center',

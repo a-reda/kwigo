@@ -89,9 +89,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   logo: {
-    color: colors.purple,
-    fontSize: 70,
-    fontFamily: 'roboto',
+    color: colors.orange,
+    fontSize: 90,
+    fontFamily: 'Olender Regular',
     textAlign: 'center',
     margin: 10,
   }

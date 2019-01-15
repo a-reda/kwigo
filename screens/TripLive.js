@@ -66,7 +66,9 @@ class TripLive extends React.Component {
 
   getPositions = () => {
     TripDS.getPositions(this.state.nextTrip.id).then((pos) => {
+      try {
       pos.forEach((e,i) => e.color = colors.markers[i])
+      } catch(e) {} 
       this.setState({positions: pos})
     })
   }

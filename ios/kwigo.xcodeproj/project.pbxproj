@@ -57,6 +57,9 @@
 		BACBA84E00B2486780DC96F6 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6D6E2E6326747D29EE86A1F /* Zocial.ttf */; };
 		9F34E7F92FDA4F2D91EF7DDB /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C4AB66DF11A48498106228B /* libAirMaps.a */; };
 		D853BA305F244C97AA5E512F /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7943D690E0F46CF91833455 /* libRNGooglePlaces.a */; };
+		30459C25FD2B42C6A37C93DE /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 29A67A1B6010417AA7613536 /* Roboto.ttf */; };
+		BD38BF3465034E0B87910CC8 /* Olender Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82420DA2A1954CFFAEC18A7E /* Olender Regular.ttf */; };
+		716D4DCD6E9346C0AEA195B6 /* Roboto Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D96B786506A48F09E7C90A5 /* Roboto Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -386,6 +389,9 @@
 		6C4AB66DF11A48498106228B /* libAirMaps.a */ = {isa = PBXFileReference; name = "libAirMaps.a"; path = "libAirMaps.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		BD01FD5812EB40EFB44FD90A /* RNGooglePlaces.xcodeproj */ = {isa = PBXFileReference; name = "RNGooglePlaces.xcodeproj"; path = "../node_modules/react-native-google-places/ios/RNGooglePlaces.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		B7943D690E0F46CF91833455 /* libRNGooglePlaces.a */ = {isa = PBXFileReference; name = "libRNGooglePlaces.a"; path = "libRNGooglePlaces.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		29A67A1B6010417AA7613536 /* Roboto.ttf */ = {isa = PBXFileReference; name = "Roboto.ttf"; path = "../assets/fonts/Roboto.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		82420DA2A1954CFFAEC18A7E /* Olender Regular.ttf */ = {isa = PBXFileReference; name = "Olender Regular.ttf"; path = "../assets/fonts/Olender Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6D96B786506A48F09E7C90A5 /* Roboto Regular.ttf */ = {isa = PBXFileReference; name = "Roboto Regular.ttf"; path = "../assets/fonts/Roboto Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -674,6 +680,9 @@
 				3A7FC1C26FB6439E8D8043AB /* Octicons.ttf */,
 				05CED4DD809C4534B7E28E36 /* SimpleLineIcons.ttf */,
 				B6D6E2E6326747D29EE86A1F /* Zocial.ttf */,
+				29A67A1B6010417AA7613536 /* Roboto.ttf */,
+				82420DA2A1954CFFAEC18A7E /* Olender Regular.ttf */,
+				6D96B786506A48F09E7C90A5 /* Roboto Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1140,6 +1149,9 @@
 				44FFF32FAA2B4828BA264756 /* Octicons.ttf in Resources */,
 				8BFA3EE54EB14DAB82F32575 /* SimpleLineIcons.ttf in Resources */,
 				BACBA84E00B2486780DC96F6 /* Zocial.ttf in Resources */,
+				30459C25FD2B42C6A37C93DE /* Roboto.ttf in Resources */,
+				BD38BF3465034E0B87910CC8 /* Olender Regular.ttf in Resources */,
+				716D4DCD6E9346C0AEA195B6 /* Roboto Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
