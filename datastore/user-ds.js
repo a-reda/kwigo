@@ -21,6 +21,22 @@ const createUser = (user) => {
     }).catch((err) => console.log(err))
 }
 
+const updateUser = (user) => {
+    const UPDATE_USER = gql`
+    mutation UpdateUser($phone_number:String, $car: String){
+    updateUser(phone_number: $phone_number,
+  					   car: $car) {
+                code
+                text
+              }
+}
+  `
+    console.log(user)
+    return client.mutate({ mutation: UPDATE_USER, variables: user}).then(res => {
+      return res.data.updateUser
+    }).catch((err) => console.log(err))
+}
+
 const getUser = async (id) => {
     const GET_USER = gql`
         {
@@ -37,5 +53,6 @@ const getUser = async (id) => {
 
 export default {
   createUser: createUser,
+  updateUser: updateUser,
   getUser: getUser
 }

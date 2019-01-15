@@ -58,8 +58,8 @@ export default class SignUpScreen extends React.Component {
 
   render() {
     return (
-     <View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 10}}>
+     <View style ={{backgroundColor: colors.white}}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 10, backgroundColor: colors.white}}>
          <Icon
            name="md-arrow-round-back"
            type="ionicon"
@@ -126,11 +126,14 @@ export default class SignUpScreen extends React.Component {
                 placeholderTextColor={'#C8C8C8'}
           />
         </View>
+        <View style={styles.buttonView}>
         <Button
           title='Sign Up'
           color={colors.orange}
           onPress={this.signUp}
         />
+        </View>
+        <View style={{height: 50}}/>
       </View>
       </ScrollView>
       </View>
@@ -159,5 +162,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.white
+  },
+  buttonView: {
+    margin: 40,
+    width: 300
   }
 })

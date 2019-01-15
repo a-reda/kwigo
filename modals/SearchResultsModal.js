@@ -33,9 +33,6 @@ class SearchResultsModal extends React.Component {
 
   }
 
-  onRequestClose() {
-    
-  }
 
   changeDate(n) {
 
@@ -97,7 +94,7 @@ class SearchResultsModal extends React.Component {
       <Modal  visible={this.props.visible}
               animationType="slide"
               style={styles.container}
-              onRequestClose={this.onRequestClose.bind(this)}>
+              onRequestClose={this.props.toggleShow}>
 
         { this.state.selectedTrip ?
         <TripViewModal
@@ -112,7 +109,7 @@ class SearchResultsModal extends React.Component {
               name="md-arrow-round-back"
               type="ionicon"
               size={55}
-              onPress={this.onRequestClose.bind(this)}
+              onPress={this.props.toggleShow}
               color='white'/>
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>

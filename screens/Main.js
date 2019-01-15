@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, TextInput, View, Modal } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Modal, Keyboard } from 'react-native';
 
 import { Button } from 'react-native-elements';
 
@@ -15,14 +15,32 @@ class MainScreen extends React.Component {
   state = {
     newTripModalVisible: false,
     searchTripModalVisible: false,
-    searchTrip: {}
+    searchTrip: {},
+    showNewButton: true
   };
 
-  toggleShow = (flag) => {
+  componentDidMount () {
+      this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+      this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+  }
+  componentWillUnmount () {
+      this.keyboardDidShowListener.remove();
+      this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidShow = () => {
+    this.setState({showNewButton: false})
+  }
+
+  _keyboardDidHide = () => {
+    this.setState({showNewButton: true})
+  }
+
+  toggleShow = () => {
       // Here it should get if a new trip was created
       this.setState(state => ({ newTripModalVisible: !state.newTripModalVisible }));
-      console.log(flag)
-      if(flag === true) this.props.navigation.navigate('Trips');
+      //console.log(flag)
+      //if(flag === true) this.props.navigation.navigate('Trips');
    };
 
   toggleShowSearch = (trip) => {
@@ -49,6 +67,7 @@ class MainScreen extends React.Component {
             searchTrip={this.state.searchTrip}
         /> : null }
         <SearchComponent onPressSearch={this.toggleShowSearch}/>
+        { this.state.showNewButton ?
         <View style={styles.buttonContainer}>
           <Button
               icon={{name:'add'}}
@@ -56,7 +75,7 @@ class MainScreen extends React.Component {
               title='New'
               onPress={this.toggleShow}
           />
-        </View>
+        </View> : null }
       </View>
     );
   }
@@ -72,6 +91,7 @@ const styles = StyleSheet.create({
   logo: {
     color: colors.purple,
     fontSize: 70,
+    fontFamily: 'roboto',
     textAlign: 'center',
     margin: 10,
   }

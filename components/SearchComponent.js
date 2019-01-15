@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, TouchableOpacity, TextInput, View, Button, DatePickerAndroid} from 'react-native';
+import { Alert, StyleSheet, Text, TouchableOpacity, TextInput, View, Button, DatePickerAndroid} from 'react-native';
 
 import colors from "../styling/colors";
 
@@ -16,7 +16,12 @@ class SearchComponent extends React.Component {
   }
 
   handleSubmit = () => {
-    this.props.onPressSearch(this.state)
+    if (this.state.departure == '' || this.state.arrival == '') {
+      Alert.alert("Please fill origin and destination")
+    } else {
+      this.props.onPressSearch(this.state)
+    }
+
   }
 
   addZero(n) {
@@ -29,7 +34,7 @@ class SearchComponent extends React.Component {
   }
 
   async datePickerModal () {
-    const {action,year,month,day}  = await DatePickerAndroid.open({date: this.state.date});
+    const {action,year,month,day}  = await DatePickerAndroid.open({date: this.state.date, minDate: (new Date())});
     if (action != DatePickerAndroid.dismissedAction) {
       this.setState({date: new Date(year,month,day)})
     }
