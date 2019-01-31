@@ -98,6 +98,7 @@ class TripLive extends React.Component {
 
   async updateNextTrip() {
     this.setState({isLoading: true});
+    this.setState({nextTrip: {}});
     var userId = await AsyncStorage.getItem('userId').then((i) => this.setState({userId: i}))
     var trips = await Promise.all([TripDS.registeredTrips(), TripDS.getMyTrips()])
             .then((trips) => {
@@ -206,6 +207,8 @@ class TripLive extends React.Component {
     // console.log(this.state)
     return (
       <View style = {styles.container}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 10}}>
+        <Icon onPress={() => this.updateNextTrip()} name="ios-refresh" type="ionicon" size={35} color={colors.orange}/>
         <View style={{flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', height: 50}}>
              <Text style={styles.small}>Live location</Text>
              <Switch style={styles.switch}
@@ -213,6 +216,7 @@ class TripLive extends React.Component {
              disabled={!this.isTripActive(trip.date)}
              thumbColor={colors.orange} ios_backgroundColor={colors.orange}
              onValueChange={this.activateLive}/>
+         </View>
          </View>
       { (trip.date && this.state.liveEnabled) ?
       <ScrollView>
